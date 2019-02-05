@@ -1,0 +1,205 @@
+[Description]
+Name = LM3S1968
+[Memory]
+CodeStart =0
+FlashSectorSize =0x400
+CodeSize =0x40000
+RAMStart =0x20000000
+RAMSize =0x10000
+[ARMType]
+Manufacturer=LuminaryMicro
+IsSTM32=0
+ARMCore=M
+CoreName=Cortex-M3
+[power]
+VCCmin=22
+VCCmax=36
+[ToolsVersions]
+MinOP4Ver=1.0.7
+[SWD]
+IdCode=0x2BA01477
+MaskID=0x0FFFEFFF
+[JTAG]
+IdCode=0x4BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=0
+IntDRLenBefore=0
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]
+UseRPP = 2
+;This section gives the device-specific parameters that the host needs to know
+;in order to program the target using a plugin.
+;This is the name of the hex file containing the plugin of the code
+PluginHexFileName = LM3S6x_RPP_plugin.hex
+;this is the offset to _deduce_ from the hex file addresses when reading it to the internal buffer
+;in most cases, it should match the lowest address of the file
+PluginHexFileOffset = 0x20000000
+;this is the offset to _add_ to the addresses when loading the plugin in RAM from the internal buffer
+;in most cases, it should match the address of the RAM (=RAMStart)
+PluginLoadAddr = 0x20000000
+;this is the value to give to SP before launching the plugin execution
+; on LPC17, this is the end of RAM minus 32 bytes that are reserved for prog functions as per the NXP spec
+PluginStackAddr = 0x20000C00
+;PluginStackAddr = @0x20000000
+;this is the address where to read the value to give to SP before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginStackAddrAddr = 0x20000000
+;this is the value to give to PC before launching the plugin execution
+; in most cases, it will match the reset vector in RAM mode and/or the start of the RAM
+PluginResetAddr = 0x20000000
+;PluginResetAddr = @0x20000004
+;this is the address where to read the value to give to PC before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginResetAddrAddr = 0x20000004
+;this is the address of the ComStat buffer used by the plugin and the host to control and synchronize
+;it MUST match the RPP_COMSTATADDR value in RPP_config.h
+PluginComStatAddr = 0x20000800
+;this is the size of the data buffers used by the plugin and the host to communicate data
+;it MUST match the RPP_BUFSIZE value in RPP_config.h
+PluginBufSize = 0x000001000
+;these are the addresses of the data buffers used by the plugin and the host to communicate data
+; it MUST match the RPP_BUF0ADDR and RPP_BUF1ADDR values in RPP_config.h
+PluginBuf0Addr = 0x20001000
+PluginBuf1Addr = 0x20002000
+;This is the timeout and alignment for the Erase and MassErase commands (in seconds)
+PluginEraseTimeout = 10
+PluginEraseAlign = 0x04
+;This is the timeout and alignment for the Program and SetProtection commands (in seconds)
+PluginProgramTimeout = 10
+PluginProgramAlign = 0x04
+;This is the timeout and alignment for the BlankCheck and CheckSum commands (in seconds)
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+;
+; Put here all the "PluginCustomError<XX> = < error message >"
+;
+;on this device, do not use plugin to erase, use direct erase instead
+DirectErase=1
+;These devices have a special unlock sequence
+UnlockSequence=1
+[UNLOCKSEQUENCE]
+; describe unlock procedure here
+UnlockSequence_NbItems=100
+;first, check voltage
+UnlockSequence1=CHECK_VOLTAGE
+;then, tie RST signal low and keep it low for the rest of the sequence
+UnlockSequence5=TIE_RST_LOW
+UnlockSequence6=WAIT,200
+;then, send the JTAG-to-SWD and SWD-to-JTAG sequences ten (10) times
+UnlockSequence10=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence11=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence12=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence13=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence14=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence15=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence16=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence17=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence18=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence19=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence20=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence21=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence22=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence23=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence24=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence25=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence26=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence27=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+UnlockSequence28=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF79E7FF
+UnlockSequence29=SEND_SWD_SERIAL,11,FFFFFFFFFFFFFFFF3CE7FF
+;now release the RST signal
+UnlockSequence40=RELEASE_RST
+;finally, wait for at least 400ms (plus RST rising time...?)
+UnlockSequence50=WAIT,700
+; power-cycle the device...?
+UnlockSequence60=TIE_RST_LOW
+UnlockSequence61=WAIT,100
+UnlockSequence62=RELEASE_RST
+[DIRECT_ERASE]
+; describe mass erase procedure (without plugin) here
+Erase_NbItems=30
+; write 0x00000000 (@0) to register 0x400FD000 (FMA)
+Erase10=WRITE,0x400FD000,0x00000000,0x00000000
+; write 0xA4420004 (MERASE) to register 0x400FD008 (FMC)
+Erase11=WRITE,0x400FD008,0xA4420004,0xA4420004
+; wait bit 2 (MERASE) low in register 0x400FD008 (FMC) ; timeout=5s
+Erase12=POLL,0x400FD008,0x00000000,0xFFFFFFFB,6
+; write 0x00020000 (@0x00020000) to register 0x400FD000 (FMA)
+Erase19=WRITE,0x400FD000,0x00020000,0x00020000
+; write 0xA4420004 (MERASE) to register 0x400FD008 (FMC)
+Erase20=WRITE,0x400FD008,0xA4420004,0xA4420004
+; wait bit 2 (MERASE) low in register 0x400FD008 (FMC) ; timeout=5s
+Erase21=POLL,0x400FD008,0x00000000,0xFFFFFFFB,5
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Reset_Breaks_Debug=1
+Nb_Breaks=8
+Disable_Read_On_The_Fly_On_FLASH=1
+Init_NbItems=0
+[SPEC_POSTRESET]
+Init_NbItems=1
+;clear RMCTL.BA bit to remap flash at 0 if needed
+Init0= WRITE,0x400FE0F0,0x00000001,0x00000001
+;activate all periph clocks, to keep debug capability
+;Init1= WRITE,0x400FE100,0x13130508,0x13130508
+;Init2= WRITE,0x400FE104,0x570F5337,0x570F5337
+;Init3= WRITE,0x400FE108,0x500121FF,0x500121FF
+[DEBUG_REGISTERS]
+;DBGMCU_CR_Addr = 0xE0042004
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+[SWV]
+UseSWV = 1
+TPIU_Current_port_size_Addr = 0xE0040004
+TPIU_Formatter_flush_ctrl_Addr = 0xE0040304
+TPIU_Sel_pin_protocol_Addr = 0xE00400F0
+TPIU_Prescaler_Addr = 0xE0040010
+ITM_Lock_Access_Addr = 0xE0000FB0
+ITM_Trace_Control_Addr = 0xE0000E80
+ITM_Trace_Enable_Addr = 0xE0000E00
+ITM_Trace_Privilege_Addr = 0xE0000E40
+DWT_ControlRegister_Addr = 0xE0001000
+DWT_CYCCNT_Addr = 0xE0001004
+DWT_CPICNT_Addr = 0xE0001008
+DWT_EXCCNT_Addr = 0xE000100C
+DWT_SLEEPCNT_Addr = 0xE0001010
+DWT_LSUCNT_Addr = 0xE0001014
+DWT_FOLDCNT_Addr = 0xE0001018
+DWT_PCSR_Addr = 0xE000101C
+DWT_COMPx_Addr = 0xE0001020
+DWT_MASKx_Addr = 0xE0001024
+DWT_FUNCTIONx_Addr = 0xE0001028
+[PDKGenPeriph]
+PeriphsFile=LM3S9x_Periphs_Desc.perisim
+PeriphsNumber = 29
+Periph_1_Name = WDT0
+Periph_2_Name = GPIOA
+Periph_3_Name = GPIOB
+Periph_4_Name = GPIOC
+Periph_5_Name = GPIOD
+Periph_6_Name = GPIOE
+Periph_7_Name = GPIOF
+Periph_8_Name = GPIOG
+Periph_9_Name = GPIOH
+Periph_10_Name = SSI0
+Periph_11_Name = SSI1
+Periph_12_Name = UART0
+Periph_13_Name = UART1
+Periph_14_Name = UART2
+Periph_15_Name = I2C0
+Periph_16_Name = I2C1
+Periph_17_Name = PWM
+Periph_18_Name = QEI0
+Periph_19_Name = QEI1
+Periph_20_Name = TIMER0
+Periph_21_Name = TIMER1
+Periph_22_Name = TIMER2
+Periph_23_Name = TIMER3
+Periph_24_Name = ADC0
+Periph_25_Name = COMP
+Periph_26_Name = HIBERNATE
+Periph_27_Name = FLASHCONT
+Periph_28_Name = SYSCTL
+Periph_29_Name = NVIC

@@ -1,0 +1,119 @@
+[Description]
+Name = STR730FZ2
+[Memory]
+CodeStart =2147483648
+CodeSize =262144
+RAMStart =2684354560
+RAMSize =16384
+[ARMType]
+Manufacturer=ST
+ARMCore=7
+ARMCoreType=3
+CoreName=ARM7
+[Plugin]
+pgmpluginhexfilename=plugin_STR7_pgm.hex
+FixedPluginAddressesOffset=00
+[map_mem]
+FLASH_BaseAddr=80000000
+FLASH_SIZE=40000
+RAM_BaseAddr=A0000000
+RAM_SIZE=4000
+offsetFLASH_CRO=100000
+[power]
+VCCmin=43
+VCCmax=59
+[flash]
+NbBank=1
+IsSectors=1
+Flash_Protected=1
+Flash_Protection_Registers=10DFB0
+IsFlashCheckSum=0
+ADDR_B0F0=00000
+ADDR_B0F1=02000
+ADDR_B0F2=04000
+ADDR_B0F3=06000
+ADDR_B0F4=08000
+ADDR_B0F5=10000
+ADDR_B0F6=20000
+ADDR_B0F7=30000
+SIZE_B0F0=02000
+SIZE_B0F1=02000
+SIZE_B0F2=02000
+SIZE_B0F3=02000
+SIZE_B0F4=08000
+SIZE_B0F5=10000
+SIZE_B0F6=10000
+SIZE_B0F7=10000
+[JTAG]
+IRLen=4
+IdCode=3F0F0F0F
+MaskID=0FFFFFFF
+fNeedTRSTforReset=0
+IntIRLenBefore[1]=0
+IntDRLenBefore=0
+IntIRLenAfter[1]=0
+IntDRLenAfter=0
+IsDBGRQ=1
+IsSMBM=1
+BusLength=28
+[ThumbMode]
+DELTA=E7FAE7FA
+[BOOT_MODE]
+BootModeReg=40000000
+NbUserMode=1
+[initatreset]
+init_number=1
+init_1_address=FFFFFC00
+init_1_value=0
+[PDKGenPeriph]
+PeriphsNumber = 49
+Periph_1_Name = DMA0
+Periph_2_Name = DMA1
+Periph_3_Name = DMA2
+Periph_4_Name = DMA3
+Periph_5_Name = CAN0
+Periph_6_Name = CAN1
+Periph_7_Name = CAN2
+Periph_8_Name = Timer0
+Periph_9_Name = Timer1
+Periph_10_Name = Timer2
+Periph_11_Name = Timer3
+Periph_12_Name = Timer4
+Periph_13_Name = Timer5
+Periph_14_Name = Timer6
+Periph_15_Name = Timer7
+Periph_16_Name = Timer8
+Periph_17_Name = Timer9
+Periph_18_Name = UART0
+Periph_19_Name = UART1
+Periph_20_Name = UART2
+Periph_21_Name = UART3
+Periph_22_Name = PWM0
+Periph_23_Name = PWM1
+Periph_24_Name = PWM2
+Periph_25_Name = PWM3
+Periph_26_Name = PWM4
+Periph_27_Name = PWM5
+Periph_28_Name = TB0
+Periph_29_Name = TB1
+Periph_30_Name = TB2
+Periph_31_Name = RTC
+Periph_32_Name = BSPI0
+Periph_33_Name = BSPI1
+Periph_34_Name = BSPI2
+Periph_35_Name = I2C0
+Periph_36_Name = I2C1
+Periph_37_Name = ADC
+Periph_38_Name = Watchdog
+Periph_39_Name = WUT
+Periph_40_Name = ARB
+Periph_41_Name = WIU
+Periph_42_Name = CMU
+Periph_43_Name = CFG
+Periph_44_Name = EIC
+Periph_45_Name = ADC
+Periph_46_Name = APB0
+Periph_47_Name = APB1
+Periph_48_Name = Power/Clock/Reset
+Periph_49_Name = FLASH_CTRL
+PeriphsFile=STR730_Periphs_Desc.perisim

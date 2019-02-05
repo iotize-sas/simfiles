@@ -1,0 +1,158 @@
+[Description]
+Name = LPC1756
+[Memory]
+CodeStart =0
+FlashSectorSize = 0x400
+CodeSize =262144
+RAMStart =0x10000000
+RAMSize =16384
+[ARMType]
+Manufacturer=NXP
+IsSTM32=0
+ARMCore=M
+CoreName=Cortex-M3
+[power]
+VCCmin=25
+VCCmax=51
+[ToolsVersions]
+MinOP4Ver=1.0.7
+[SWD]
+IdCode=0x1BA01477
+MaskID=0x0FFFEFFF
+[JTAG]
+IdCode=0x2BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=0
+IntDRLenBefore=0
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]
+Has_Flash_CheckSum=1
+Vector_CheckSum=0x1C
+UseRPP = 2
+;this section gives the device-specific parameters that the host needs to know
+; in order to program the target using a plugin.
+;this is the name of the hex file containing the plugin of the code
+PluginHexFileName = LPC17_RPP_plugin.hex
+;this is the offset to _deduce_ from the hex file addresses when reading it to the internal buffer
+;in most cases, it should match the lowest address of the file
+PluginHexFileOffset = 0x10000000
+;this is the offset to _add_ to the addresses when loading the plugin in RAM from the internal buffer
+;in most cases, it should match the address of the RAM (=RAMStart)
+PluginLoadAddr = 0x10000000
+;this is the value to give to SP before launching the plugin execution
+; on LPC17, this is the end of RAM minus 32 bytes that are reserved for prog functions as per the NXP spec
+PluginStackAddr = 0x10003FE0
+;PluginStackAddr = @0x10000000
+;this is the address where to read the value to give to SP before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginStackAddrAddr = 0x10000000
+;this is the value to give to PC before launching the plugin execution
+; in most cases, it will match the reset vector in RAM mode and/or the start of the RAM
+PluginResetAddr = 0x10000000
+;PluginResetAddr = @0x10000004
+;this is the address where to read the value to give to PC before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginResetAddrAddr = 0x10000004
+;this is the address of the ComStat buffer used by the plugin and the host to control and synchronize
+; it MUST match the RPP_COMSTATADDR value in RPP_config.h
+PluginComStatAddr = 0x10000FC0
+;this is the size of the data buffers used by the plugin and the host to communicate data
+; it MUST match the RPP_BUFSIZE value in RPP_config.h
+PluginBufSize = 0x00001000
+;these are the addresses of the data buffers used by the plugin and the host to communicate data
+; it MUST match the RPP_BUF0ADDR and RPP_BUF1ADDR values in RPP_config.h
+PluginBuf0Addr = 0x10001000
+PluginBuf1Addr = 0x10002000
+;This is the timeout and alignment for the Erase and MassErase commands (in seconds)
+PluginEraseTimeout = 10
+PluginEraseAlign = 0x04
+;This is the timeout and alignment for the Program and SetProtection commands (in seconds)
+PluginProgramTimeout = 5
+PluginProgramAlign = 0x100
+;This is the timeout and alignment for the BlankCheck and CheckSum commands (in seconds)
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+;These are the error codes from the IAP function and their associated error messages
+PluginCustomError84=IAP function returned error 1: Invalid command.
+PluginCustomError85=IAP function returned error 2: Source address is not on word boundary.
+PluginCustomError86=IAP function returned error 3: Destination address is not on a correct boundary.
+PluginCustomError87=IAP function returned error 4: Source address is not mapped in the memory map. Count value is taken into consideration where applicable.
+PluginCustomError88=IAP function returned error 5: Destination address is not mapped in the memory map. Count value is taken into consideration where applicable.
+PluginCustomError89=IAP function returned error 6: Byte count is not multiple of 4 or is not a permitted value.
+PluginCustomError8A=IAP function returned error 7: Sector number is invalid or end sector number is greater than start sector number.
+PluginCustomError8B=IAP function returned error 8: Sector is not blank.
+PluginCustomError8C=IAP function returned error 9: Command to prepare sector for write operation was not executed.
+PluginCustomError8D=IAP function returned error 10: Source and destination data not equal.
+PluginCustomError8E=IAP function returned error 11: Flash programming hardware interface is busy.
+PluginCustomError8F=IAP function returned error 12: Insufficient number.
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Nb_Breaks=8
+Init_NbItems=0
+[SPEC_POSTRESET]
+Init_NbItems=3
+;remap flash at zero instead of boot rom
+;see spec of MEMMAP register in LPC1768 reference manual
+Init0= WRITE,0x400FC040,0x00000001,0x00000001
+;read value of PC at address 4
+Init1=READPC,0x00000004
+;read value of SP at address 0
+Init2=READSP,0x00000000
+[DEBUG_REGISTERS]
+DBGMCU_CR_Addr = 0xE0042004
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+[SWV]
+UseSWV = 1
+TPIU_Current_port_size_Addr = 0xE0040004
+TPIU_Formatter_flush_ctrl_Addr = 0xE0040304
+TPIU_Sel_pin_protocol_Addr = 0xE00400F0
+TPIU_Prescaler_Addr = 0xE0040010
+ITM_Lock_Access_Addr = 0xE0000FB0
+ITM_Trace_Control_Addr = 0xE0000E80
+ITM_Trace_Enable_Addr = 0xE0000E00
+ITM_Trace_Privilege_Addr = 0xE0000E40
+DWT_ControlRegister_Addr = 0xE0001000
+DWT_CYCCNT_Addr = 0xE0001004
+DWT_CPICNT_Addr = 0xE0001008
+DWT_EXCCNT_Addr = 0xE000100C
+DWT_SLEEPCNT_Addr = 0xE0001010
+DWT_LSUCNT_Addr = 0xE0001014
+DWT_FOLDCNT_Addr = 0xE0001018
+DWT_PCSR_Addr = 0xE000101C
+DWT_COMPx_Addr = 0xE0001020
+DWT_MASKx_Addr = 0xE0001024
+DWT_FUNCTIONx_Addr = 0xE0001028
+[PDKGenPeriph]
+PeriphsFile=LPC17.perisim
+PeriphsNumber = 49
+Periph_1_Name = SystemControl
+Periph_2_Name = ClockingAndPowerControl
+Periph_3_Name = FlashAccelerator
+Periph_4_Name = NVIC
+Periph_5_Name = PinConnectBlock
+Periph_6_Name = GPIO
+Periph_8_Name = USBDeviceCtrl
+Periph_9_Name = USBHostCtrl
+Periph_10_Name = USBOTGCtrl
+Periph_11_Name = UART
+Periph_12_Name = CAN2
+Periph_13_Name = SPI
+Periph_14_Name = SSP
+Periph_14_Name = SSP2
+Periph_15_Name = I2C
+Periph_16_Name = I2S
+Periph_17_Name = Timer
+Periph_18_Name = RIT
+Periph_19_Name = SysTickTimer
+Periph_20_Name = PWM
+Periph_22_Name = MotorControlPWM
+Periph_24_Name = RTC
+Periph_25_Name = WDT
+Periph_26_Name = ADC
+Periph_27_Name = DAC
+Periph_28_Name = GPDMA
+Periph_29_Name = AHB_SRAM

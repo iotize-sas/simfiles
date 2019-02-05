@@ -1,0 +1,425 @@
+[Description]
+Name = LPC2134
+[Memory]
+CodeStart =0
+CodeSize =131072
+RAMStart =1073741824
+RAMSize =16384
+[map_mem]
+FLASH_BaseAddr=00000000
+FLASH_SIZE=20000
+RAM_BaseAddr=40000000
+RAM_SIZE=4000
+[ARMType]
+Manufacturer=NXP
+ARMCore=7
+ARMCoreType=1
+CoreName=ARM7
+IsNXP=1
+CKSpeedmax=400
+[Plugin]
+pgmpluginhexfilename=Plugin_pgm_LPC.hex
+FixedPluginAddressesOffset=30
+[power]
+VCCmin=25
+VCCmax=41
+[flash]
+erasenotreturn=1
+Size_Download=1000
+SIZE_WRITE1=256
+SIZE_WRITE2=512
+SIZE_WRITE3=1024
+SIZE_WRITE4=4096
+Vector_CheckSum=14
+Last_Vector=1C
+IsFlashCheckSum=1
+NbBank=1
+IsSectors=1
+Flash_Protected=0
+Flash_Protection_Registers=10DFB0
+ADDR_SECTOR[0]=000000
+ADDR_SECTOR[1]=001000
+ADDR_SECTOR[2]=002000
+ADDR_SECTOR[3]=003000
+ADDR_SECTOR[4]=004000
+ADDR_SECTOR[5]=005000
+ADDR_SECTOR[6]=006000
+ADDR_SECTOR[7]=007000
+ADDR_SECTOR[8]=008000
+ADDR_SECTOR[9]=010000
+ADDR_SECTOR[10]=018000
+SIZE_SECTOR[0]=001000
+SIZE_SECTOR[1]=001000
+SIZE_SECTOR[2]=001000
+SIZE_SECTOR[3]=001000
+SIZE_SECTOR[4]=001000
+SIZE_SECTOR[5]=001000
+SIZE_SECTOR[6]=001000
+SIZE_SECTOR[7]=001000
+SIZE_SECTOR[8]=008000
+SIZE_SECTOR[9]=008000
+SIZE_SECTOR[10]=008000
+NAME_SECTOR[0]=SECTOR0
+NAME_SECTOR[1]=SECTOR1
+NAME_SECTOR[2]=SECTOR2
+NAME_SECTOR[3]=SECTOR3
+NAME_SECTOR[4]=SECTOR4
+NAME_SECTOR[5]=SECTOR5
+NAME_SECTOR[6]=SECTOR6
+NAME_SECTOR[7]=SECTOR7
+NAME_SECTOR[8]=SECTOR8
+NAME_SECTOR[9]=SECTOR9
+NAME_SECTOR[10]=SECTOR10
+[JTAG]
+IRLen=4
+IdCode=4F1F0F0F
+MaskID=0FFFFFFF
+fNeedsRTCKLowDuringReset=1
+fNeedTRSTforReset=1
+IntIRLenBefore[1]=0
+IntDRLenBefore=0
+IntIRLenAfter[1]=0
+IntDRLenAfter=0
+IsDBGRQ=0
+BusLength=28
+[ThumbMode]
+DELTA=E7FAE7FA
+[BOOT_MODE]
+BootModeReg=A0000050
+NbUserMode=2
+[initatreset]
+init_number=1
+init_1_address=FFFFF014
+init_1_value=FFFFFFFF
+[ToolsVersions]
+MinOP4Ver=1.0.7
+[PDKGenPeriph]
+PeriphsNumber = 19
+Periph_1_Name = SystemControlBlock
+Periph_2_Name = VIC
+Periph_3_Name = MAM
+Periph_4_Name = PinConnectBlock
+Periph_5_Name = GPIO_Port0
+Periph_6_Name = GPIO_Port1
+Periph_7_Name = UART0
+Periph_8_Name = UART1
+Periph_9_Name = I2C0
+Periph_10_Name = I2C1
+Periph_11_Name = SPI
+Periph_12_Name = SSP
+Periph_13_Name = TIMER0
+Periph_14_Name = TIMER1
+Periph_15_Name = ADC
+Periph_16_Name = DAC
+Periph_17_Name = PWM
+Periph_18_Name = WDT
+Periph_19_Name = RTC
+[MAM]
+SegmentsNumber = 1
+Segment_1 = MAM_seg1, 32, 0xE01FC000, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[VIC]
+SegmentsNumber = 4
+Segment_1 = VIC_seg1, 32, 0xFFFFF000, 0x24
+Segment_2 = VIC_seg2, 32, 0xFFFFF030, 0x08
+Segment_3 = VIC_seg3, 32, 0xFFFFF100, 0x40
+Segment_4 = VIC_seg4, 32, 0xFFFFF200, 0x40
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[PinConnectBlock]
+SegmentsNumber = 2
+Segment_1 = PCB_seg1, 32, 0xE002C000, 0x08
+Segment_2 = PCB_seg2, 32, 0xE002C014, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[GPIO_Port0]
+SegmentsNumber = 1
+Segment_1 = GPIO_Port0_seg1, 32, 0xE0028000, 0x10
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[GPIO_Port1]
+SegmentsNumber = 1
+Segment_1 = GPIO_Port1_seg1, 32, 0xE0028010, 0x10
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[Ethernet]
+SegmentsNumber = 9
+Segment_1 = Ethernet_seg1, 32, 0xFFE00000, 0x38
+Segment_2 = Ethernet_seg2, 32, 0xFFE00040, 0x0C
+Segment_3 = Ethernet_seg3, 32, 0xFFE00100, 0x30
+Segment_4 = Ethernet_seg4, 32, 0xFFE00158, 0x0C
+Segment_5 = Ethernet_seg5, 32, 0xFFE00170, 0x08
+Segment_6 = Ethernet_seg6, 32, 0xFFE00200, 0x0C
+Segment_7 = Ethernet_seg7, 32, 0xFFE00210, 0x08
+Segment_8 = Ethernet_seg8, 32, 0xFFE00FE0, 0x10
+Segment_9 = Ethernet_seg9, 32, 0xFFE00FF4, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[UART0]
+SegmentsNumber = 5
+Segment_1 = UART0_seg1, 32, 0xE000C000, 0x10
+Segment_2 = UART0_seg2, 32, 0xE000C014, 0x04
+Segment_3 = UART0_seg3, 32, 0xE000C01C, 0x08
+Segment_4 = UART0_seg4, 32, 0xE000C028, 0x04
+Segment_5 = UART0_seg5, 32, 0xE000C030, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[UART1]
+SegmentsNumber = 3
+Segment_1 = UART1_seg1, 32, 0xE0010000, 0x24
+Segment_2 = UART1_seg2, 32, 0xE000C028, 0x04
+Segment_3 = UART1_seg3, 32, 0xE0010030, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[UART2]
+SegmentsNumber = 5
+Segment_1 = UART2_seg1, 32, 0xE0078000, 0x10
+Segment_2 = UART2_seg2, 32, 0xE0078014, 0x04
+Segment_3 = UART2_seg3, 32, 0xE007801C, 0x08
+Segment_4 = UART2_seg4, 32, 0xE0078028, 0x04
+Segment_5 = UART2_seg5, 32, 0xE0078030, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[UART3]
+SegmentsNumber = 5
+Segment_1 = UART3_seg1, 32, 0xE007C000, 0x10
+Segment_2 = UART3_seg2, 32, 0xE007C014, 0x04
+Segment_3 = UART3_seg3, 32, 0xE007C01C, 0x08
+Segment_4 = UART3_seg4, 32, 0xE007C028, 0x04
+Segment_5 = UART3_seg5, 32, 0xE007C030, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[I2C0]
+SegmentsNumber = 1
+Segment_1 = I2C0_seg1, 32, 0xE001C000, 0x1C
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[I2C1]
+SegmentsNumber = 1
+Segment_1 = I2C1_seg1, 32, 0xE005C000, 0x1C
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[I2C2]
+SegmentsNumber = 1
+Segment_1 = I2C2_seg1, 32, 0xE0080000, 0x1C
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[I2S]
+SegmentsNumber = 1
+Segment_1 = I2S_seg1, 32, 0xE0088000, 0x28
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[SSP0]
+SegmentsNumber = 1
+Segment_1 = SSP_seg1, 32, 0xE005C000, 0x24
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[SPI]
+SegmentsNumber = 2
+Segment_1 = SPI_seg1, 32, 0xE0020000, 0x10
+Segment_2 = SPI_seg2, 32, 0xE002001C, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[SPI0]
+SegmentsNumber = 2
+Segment_1 = SPI0_seg1, 32, 0xE0020000, 0x10
+Segment_2 = SPI0_seg2, 32, 0xE002001C, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[SPI1]
+SegmentsNumber = 1
+Segment_1 = SPI1_seg1, 32, 0xE0068000, 0x24
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[CAN1]
+SegmentsNumber = 4
+Segment_1 = CAN1_seg1, 32, 0xE0038000, 0x800
+Segment_2 = CAN1_seg2, 32, 0xE003C000, 0x20
+Segment_3 = CAN1_seg3, 32, 0xE0040000, 0x0C
+Segment_4 = CAN1_seg4, 32, 0xE0044000, 0x60
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[CAN2]
+SegmentsNumber = 1
+Segment_1 = CAN2_seg1, 32, 0xE0048000, 0x60
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[CAN3]
+SegmentsNumber = 1
+Segment_1 = CAN3_seg1, 32, 0xE004C000, 0x60
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[CAN4]
+SegmentsNumber = 1
+Segment_1 = CAN4_seg1, 32, 0xE0050000, 0x60
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[USB_DevCtrl]
+SegmentsNumber = 4
+Segment_1 = USB_DevCtrl_seg1, 32, 0xFFE0CFF4, 0x08
+Segment_2 = USB_DevCtrl_seg2, 32, 0xE01FC1C0, 0x04
+Segment_3 = USB_DevCtrl_seg3, 32, 0xFFE0C200, 0x5C
+Segment_4 = USB_DevCtrl_seg4, 32, 0xFFE0C2A0, 0x24
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[USB_HostCtrl]
+SegmentsNumber = 2
+Segment_1 = USB_HostCtrl_seg1, 32, 0xFFE0C000, 0x5C
+Segment_2 = USB_HostCtrl_seg2, 32, 0xFFE0C0FC, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[USB_OTGCtrl]
+SegmentsNumber = 3
+Segment_1 = USB_OTGCtrl_seg1, 32, 0xFFE0C100, 0x18
+Segment_2 = USB_OTGCtrl_seg2, 32, 0xFFE0C300, 0x14
+Segment_3 = USB_OTGCtrl_seg3, 32, 0xFFE0CFF4, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[SD/MMC]
+SegmentsNumber = 3
+Segment_1 = MCI_seg1, 32, 0xE008C000, 0x40
+Segment_2 = MCI_seg2, 32, 0xE008C048, 0x08
+Segment_3 = MCI_seg3, 32, 0xE008C080, 0x40
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[TIMER0]
+SegmentsNumber = 2
+Segment_1 = TIMER0_seg1, 32, 0xE0004000, 0x40
+Segment_2 = TIMER0_seg2, 32, 0xE0004070, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[TIMER1]
+SegmentsNumber = 2
+Segment_1 = TIMER1_seg1, 32, 0xE0008000, 0x40
+Segment_2 = TIMER1_seg2, 32, 0xE0008070, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[TIMER2]
+SegmentsNumber = 3
+Segment_1 = TIMER2_seg1, 32, 0xE0070000, 0x38
+Segment_2 = TIMER2_seg2, 32, 0xE007003C, 0x04
+Segment_3 = TIMER2_seg3, 32, 0xE0070070, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[TIMER3]
+SegmentsNumber = 3
+Segment_1 = TIMER3_seg1, 32, 0xE0074000, 0x38
+Segment_2 = TIMER3_seg2, 32, 0xE007403C, 0x04
+Segment_3 = TIMER3_seg3, 32, 0xE0074070, 0x08
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[PWM]
+SegmentsNumber = 2
+Segment_1 = PWM_seg1, 32, 0xE0014000, 0x28
+Segment_2 = PWM_seg2, 32, 0xE0014040, 0x14
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[ADC0]
+SegmentsNumber = 1
+Segment_1 = ADC0_seg1, 32, 0xE0034000, 0x34
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[ADC1]
+SegmentsNumber = 2
+Segment_1 = ADC1_seg1, 32, 0xE0060000, 0x08
+Segment_2 = ADC1_seg2, 32, 0xE006000C, 0x24
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[DAC]
+SegmentsNumber = 1
+Segment_1 = DAC_seg1, 32, 0xE006C000, 0x04
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[GPDMA]
+SegmentsNumber = 3
+Segment_1 = GPDMA_seg1, 32, 0xFFE04000, 0x38
+Segment_2 = GPDMA_seg2, 32, 0xFFE04100, 0x14
+Segment_3 = GPDMA_seg3, 32, 0xFFE04120, 0x10
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[RTC]
+SegmentsNumber = 2
+Segment_1 = RTC_seg1, 32, 0xE0024000, 0x40
+Segment_2 = RTC_seg2, 32, 0xE0024060, 0x28
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+[WDT]
+SegmentsNumber = 1
+Segment_1 = WDT_seg1, 32, 0xE0000000, 0x10
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");

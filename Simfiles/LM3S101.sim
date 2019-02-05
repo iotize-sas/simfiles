@@ -1,0 +1,1418 @@
+[Description]
+Name = LM3S101
+[Memory]
+CodeStart =0
+FlashSectorSize = 1024
+CodeSize =8192
+RAMStart =0x20000000
+RAMSize =2048
+MinStackSize = 0x100
+[ARMType]
+Manufacturer=LuminaryMicro
+IsSTM32=0
+[power]
+VCCmin=18
+VCCmax=52
+[SWD]
+IdCode=0x1BA01477
+MaskID=0x0FFFEFFF
+SpecialSWDEntrySequence=1
+SpecialSWDEntrySequence_len=2
+SpecialSWDEntrySequence_data=6DB7
+[JTAG]
+IdCode=0x1BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=0
+IntDRLenBefore=0
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]	
+UseRPP = 2
+;this section gives the device-specific parameters that the host needs to know
+;in order to program the target using a plugin.
+;this is the name of the hex file containing the plugin of the code
+PluginHexFileName = LM3S_RPP_plugin.hex
+;this is the offset to _deduce_ from the hex file addresses when reading it to the internal buffer
+;in most cases, it should match the lowest address of the file
+PluginHexFileOffset = 0x20000000
+;this is the offset to _add_ to the addresses when loading the plugin in RAM from the internal buffer
+;in most cases, it should match the address of the RAM (=RAMStart)
+PluginLoadAddr = 0x20000000
+;this is the value to give to SP before launching the plugin execution
+; on LPC17, this is the end of RAM minus 32 bytes that are reserved for prog functions as per the NXP spec
+PluginStackAddr = 0x20000600
+;PluginStackAddr = @0x20000000
+;this is the address where to read the value to give to SP before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginStackAddrAddr = 0x20000000
+;this is the value to give to PC before launching the plugin execution
+; in most cases, it will match the reset vector in RAM mode and/or the start of the RAM
+PluginResetAddr = 0x20000000
+;PluginResetAddr = @0x20000004
+;this is the address where to read the value to give to PC before launching the plugin execution
+; in most cases, it will match the address of the reset vector in RAM mode and/or the start of the RAM
+;PluginResetAddrAddr = 0x20000004
+;this is the address of the ComStat buffer used by the plugin and the host to control and synchronize
+;it MUST match the RPP_COMSTATADDR value in RPP_config.h
+PluginComStatAddr = 0x200006C0
+;this is the size of the data buffers used by the plugin and the host to communicate data
+;it MUST match the RPP_BUFSIZE value in RPP_config.h
+PluginBufSize = 0x00000080
+;these are the addresses of the data buffers used by the plugin and the host to communicate data
+; it MUST match the RPP_BUF0ADDR and RPP_BUF1ADDR values in RPP_config.h
+PluginBuf0Addr = 0x20000700
+PluginBuf1Addr = 0x20000780
+;This is the timeout and alignment for the Erase and MassErase commands (in seconds)
+PluginEraseTimeout = 10
+PluginEraseAlign = 0x04
+;This is the timeout and alignment for the Program and SetProtection commands (in seconds)
+PluginProgramTimeout = 5
+PluginProgramAlign = 0x04
+;This is the timeout and alignment for the BlankCheck and CheckSum commands (in seconds)
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+
+;
+; Put here all the "PluginCustomError<XX> = < error message >"
+;
+
+;on this device, don't use plugin to erase
+DirectErase=1
+
+[DIRECT_ERASE]
+; describe mass erase procedure (without plugin) here
+Erase_NbItems=2
+; write 0xA4420004 (MERASE) to register 0x400FD008 (FMC)
+Erase0=WRITE,0x400FD008,0xA4420004,0xA4420004
+; wait bit 2 (MERASE) low in register 0x400FD008 (FMC) ; timeout=5s
+Erase1=POLL,0x400FD008,0x00000000,0xFFFFFFFB,5
+
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Reset_Breaks_Debug=1
+Nb_Breaks=8
+Disable_Read_On_The_Fly_On_FLASH=1
+Init_NbItems=0
+
+[DEBUG_REGISTERS]
+;DBGMCU_CR_Addr = 0xE0042004
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+
+[SWV]
+UseSWV = 1
+TPIU_Current_port_size_Addr = 0xE0040004
+TPIU_Formatter_flush_ctrl_Addr = 0xE0040304
+TPIU_Sel_pin_protocol_Addr = 0xE00400F0
+TPIU_Prescaler_Addr = 0xE0040010
+ITM_Lock_Access_Addr = 0xE0000FB0
+ITM_Trace_Control_Addr = 0xE0000E80
+ITM_Trace_Enable_Addr = 0xE0000E00
+ITM_Trace_Privilege_Addr = 0xE0000E40
+DWT_ControlRegister_Addr = 0xE0001000
+DWT_CYCCNT_Addr = 0xE0001004
+DWT_CPICNT_Addr = 0xE0001008
+DWT_EXCCNT_Addr = 0xE000100C
+DWT_SLEEPCNT_Addr = 0xE0001010
+DWT_LSUCNT_Addr = 0xE0001014
+DWT_FOLDCNT_Addr = 0xE0001018
+DWT_PCSR_Addr = 0xE000101C
+DWT_COMPx_Addr = 0xE0001020
+DWT_MASKx_Addr = 0xE0001024
+DWT_FUNCTIONx_Addr = 0xE0001028
+
+
+[PDKGenPeriph]
+PeriphsNumber = 12
+Periph_1_Name = WDT
+Periph_2_Name = GPIOA
+Periph_3_Name = GPIOB
+Periph_4_Name = GPIOC
+Periph_5_Name = SSI0
+Periph_6_Name = UART0
+Periph_7_Name = TIMER0
+Periph_8_Name = TIMER1
+Periph_9_Name = COMP
+Periph_10_Name = FLASHCONTROL
+Periph_11_Name = SYSCTL
+Periph_12_Name = NVIC
+
+
+[WDT]
+SegmentsNumber = 1
+Segment_1 = WDT_seg1, 32, 0x40000000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; to be completed
+;
+
+[GPIOA]
+SegmentsNumber = 1
+Segment_1 = GPIOA_seg1, 32, 0x40004000, 0x1000
+
+SymbsNumber = 1
+Symb_1 = Data, 0, 0x400043FC
+
+GroupsNumber = 1
+Group_1_Name = GPIOADATA
+Group_1_Comment = "GPIOBDATA\n•Base address: 4000 43FCh.\n•Reset Value: 0000 0000h."
+
+;
+; to be completed
+;
+
+[GPIOB]
+SegmentsNumber = 1
+Segment_1 = GPIOB_seg1, 32, 0x40005000, 0x1000
+
+SymbsNumber = 18
+Symb_1 = GPIO_PORTB_DATA, 0, 0x400053FC
+Symb_2 = GPIO_PORTB_DIR, 0, 0x40005400
+Symb_3 = GPIO_PORTB_IS, 0, 0x40005404
+Symb_4 = GPIO_PORTB_IBE, 0, 0x40005408
+Symb_5 = GPIO_PORTB_IEV, 0, 0x4000540C
+Symb_6 = GPIO_PORTB_IM, 0, 0x40005410
+Symb_7 = GPIO_PORTB_RIS, 0, 0x40005414
+Symb_8 = GPIO_PORTB_MIS, 0, 0x40005418
+Symb_9 = GPIO_PORTB_ICR, 0, 0x4000541C
+Symb_10 = GPIO_PORTB_AFSEL, 0, 0x40005420
+Symb_11 = GPIO_PORTB_DR2R, 0, 0x40005500
+Symb_12 = GPIO_PORTB_DR4R, 0, 0x40005504
+Symb_13 = GPIO_PORTB_DR8R, 0, 0x40005508
+Symb_14 = GPIO_PORTB_ODR, 0, 0x4000550C
+Symb_15 = GPIO_PORTB_PUR, 0, 0x40005510
+Symb_16 = GPIO_PORTB_PDR, 0, 0x40005514
+Symb_17 = GPIO_PORTB_SLR, 0, 0x40005518
+Symb_18 = GPIO_PORTB_DEN, 0, 0x4000551C
+
+GroupsNumber = 18
+
+Group_1_Name = PORTB DATA REGISTER
+Group_1_Comment = "This register is virtually mapped to 256 locations in the address space. To facilitate the reading and writing of data to these registers by independent drivers, the data read from and the data written to the registers are masked by the eight address lines ipaddr[9:2]. Reads from this register return its current state. Writes to this register only affectbits that are not masked by ipaddr[9:2] and are configured as outputs.\n•Base address: 4000 53FCh.\n•Reset Value: 0000 0000h."
+Group_1_Type = 0
+Group_1_CodingProc = SetString("0x"+GetDWordValue(0,0x400053FC).toString(16));
+
+Group_1_ItemsNumber = 9
+	Group_1_Item_1_Name = GPIO_PORTB_DATA
+	Group_1_Item_1_Comment = "Bits [7:0] = data\nBits [31:8] = reserved."
+	Group_1_Item_1_Type = 0
+	Group_1_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x400053FC)&0xFF).toString(16));
+	Group_1_Item_1_DecodingProc = SetWordValue(0,0x400053FC,(parseInt(GetString())&0xFF));
+	
+	Group_1_Item_2_Name = GPIO_PORTB_DATA[0]
+	Group_1_Item_2_Comment = "Bit 0 "
+	Group_1_Item_2_Type = 1, 0, 1
+	Group_1_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x1)>>0);
+	Group_1_Item_2_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<0)|(GetDWordValue(0,0x400053FC)&~0x1));
+
+	Group_1_Item_3_Name = GPIO_PORTB_DATA[1]
+	Group_1_Item_3_Comment = "Bit 1 "
+	Group_1_Item_3_Type = 1, 0, 1
+	Group_1_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x2)>>1);
+	Group_1_Item_3_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<1)|(GetDWordValue(0,0x400053FC)&~0x2));
+
+	Group_1_Item_4_Name = GPIO_PORTB_DATA[2]
+	Group_1_Item_4_Comment = "Bit 2 "
+	Group_1_Item_4_Type = 1, 0, 1
+	Group_1_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x4)>>2);
+	Group_1_Item_4_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<2)|(GetDWordValue(0,0x400053FC)&~0x4));
+	
+	Group_1_Item_5_Name = GPIO_PORTB_DATA[3]
+	Group_1_Item_5_Comment = "Bit 3 "
+	Group_1_Item_5_Type = 1, 0, 1
+	Group_1_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x8)>>3);
+	Group_1_Item_5_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<3)|(GetDWordValue(0,0x400053FC)&~0x8));
+
+	Group_1_Item_6_Name = GPIO_PORTB_DATA[4]
+	Group_1_Item_6_Comment = "Bit 4 "
+	Group_1_Item_6_Type = 1, 0, 1
+	Group_1_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x10)>>4);
+	Group_1_Item_6_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<4)|(GetDWordValue(0,0x400053FC)&~0x10));
+
+	Group_1_Item_7_Name = GPIO_PORTB_DATA[5]
+	Group_1_Item_7_Comment = "Bit 5 "
+	Group_1_Item_7_Type = 1, 0, 1
+	Group_1_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x20)>>5);
+	Group_1_Item_7_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<5)|(GetDWordValue(0,0x400053FC)&~0x20));
+
+	Group_1_Item_8_Name = GPIO_PORTB_DATA[6]
+	Group_1_Item_8_Comment = "Bit 6 "
+	Group_1_Item_8_Type = 1, 0, 1
+	Group_1_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x40)>>6);
+	Group_1_Item_8_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<6)|(GetDWordValue(0,0x400053FC)&~0x40));
+	
+	Group_1_Item_9_Name = GPIO_PORTB_DATA[7]
+	Group_1_Item_9_Comment = "Bit 7 "
+	Group_1_Item_9_Type = 1, 0, 1
+	Group_1_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x400053FC)&0x80)>>7);
+	Group_1_Item_9_DecodingProc = SetDWordValue(0, 0x400053FC, (GetInt()<<7)|(GetDWordValue(0,0x400053FC)&~0x80));
+	
+Group_2_Name = PORTB DATA DIRECTION REGISTER
+Group_2_Comment = "GPIOB Direction\n•Base address: 4000 5400h.\n•Reset Value: 0000 0000h.\nAll bits are cleared by reset meaning all GPIO pins are inputs by default."
+Group_2_CodingProc = SetString("0x"+GetDWordValue(0,0x40005400).toString(16));
+
+Group_2_ItemsNumber = 9
+	Group_2_Item_1_Name = GPIO_PORTB_DIR
+	Group_2_Item_1_Comment = "GPIO Data Direction.\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output\nThe bits [31:8] are reserved."
+	Group_2_Item_1_Type = 0
+	Group_2_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005400)&0xFF).toString(16));
+	Group_2_Item_1_DecodingProc = SetWordValue(0,0x40005400,(parseInt(GetString())&0xFF));
+
+	Group_2_Item_2_Name = GPIO_PORTB_DIR[0]
+	Group_2_Item_2_Comment = "Bit 0\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_2_Type = 1, 0, 1
+	Group_2_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x1)>>0);
+	Group_2_Item_2_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<0)|(GetDWordValue(0,0x40005400)&~0x1));
+
+	Group_2_Item_3_Name = GPIO_PORTB_DIR[1]
+	Group_2_Item_3_Comment = "Bit 1\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_3_Type = 1, 0, 1
+	Group_2_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x2)>>1);
+	Group_2_Item_3_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<1)|(GetDWordValue(0,0x40005400)&~0x2));
+
+	Group_2_Item_4_Name = GPIO_PORTB_DIR[2]
+	Group_2_Item_4_Comment = "Bit 2\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_4_Type = 1, 0, 1
+	Group_2_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x4)>>2);
+	Group_2_Item_4_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<2)|(GetDWordValue(0,0x40005400)&~0x4));
+	
+	Group_2_Item_5_Name = GPIO_PORTB_DIR[3]
+	Group_2_Item_5_Comment = "Bit 3\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_5_Type = 1, 0, 1
+	Group_2_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x8)>>3);
+	Group_2_Item_5_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<3)|(GetDWordValue(0,0x40005400)&~0x8));
+
+	Group_2_Item_6_Name = GPIO_PORTB_DIR[4]
+	Group_2_Item_6_Comment = "Bit 4\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_6_Type = 1, 0, 1
+	Group_2_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x10)>>4);
+	Group_2_Item_6_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<4)|(GetDWordValue(0,0x40005400)&~0x10));
+
+	Group_2_Item_7_Name = GPIO_PORTB_DIR[5]
+	Group_2_Item_7_Comment = "Bit 5\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_7_Type = 1, 0, 1
+	Group_2_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x20)>>5);
+	Group_2_Item_7_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<5)|(GetDWordValue(0,0x40005400)&~0x20));
+
+	Group_2_Item_8_Name = GPIO_PORTB_DIR[6]
+	Group_2_Item_8_Comment = "Bit 6\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_8_Type = 1, 0, 1
+	Group_2_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x40)>>6);
+	Group_2_Item_8_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<6)|(GetDWordValue(0,0x40005400)&~0x40));
+	
+	Group_2_Item_9_Name = GPIO_PORTB_DIR[7]
+	Group_2_Item_9_Comment = "Bit 7\nThis DIR values are defined as follows\n•Bit set to 0 : input\n•Bit set to 1 : output "
+	Group_2_Item_9_Type = 1, 0, 1
+	Group_2_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005400)&0x80)>>7);
+	Group_2_Item_9_DecodingProc = SetDWordValue(0, 0x40005400, (GetInt()<<7)|(GetDWordValue(0,0x40005400)&~0x80));
+	
+	
+Group_3_Name = PORTB INTERRUPT SENSE REGISTER
+Group_3_Comment = "GPIOB Interrupt Sense\n•Base address: 4000 5404h.\n•Reset Value: 0000 0000h.\nAll bits are cleared by a reset"
+Group_3_CodingProc = SetString("0x"+GetDWordValue(0,0x40005404).toString(16));
+
+Group_3_ItemsNumber = 9
+	Group_3_Item_1_Name = GPIO_PORTB_IS
+	Group_3_Item_1_Comment = "GPIO Interrupt Sense.\nThis IS values are defined as follows\n•Bit set to 0 : edge on corresponding pin is detected (edge-sensitive)\n•Bit set to 1 : level on corresponding pin is detected\nThe bits [31:8] are reserved."
+	Group_3_Item_1_Type = 0
+	Group_3_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005404)&0xFF).toString(16));
+	Group_3_Item_1_DecodingProc = SetWordValue(0,0x40005404,(parseInt(GetString())&0xFF));
+
+	Group_3_Item_2_Name = GPIO_PORTB_IS[0]
+	Group_3_Item_2_Comment = "Bit 0 "
+	Group_3_Item_2_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x1)>>0);
+	Group_3_Item_2_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<0)|(GetDWordValue(0,0x40005404)&~0x1));
+
+	Group_3_Item_3_Name = GPIO_PORTB_IS[1]
+	Group_3_Item_3_Comment = "Bit 1 "
+	Group_3_Item_3_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x2)>>1);
+	Group_3_Item_3_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<1)|(GetDWordValue(0,0x40005404)&~0x2));
+
+	Group_3_Item_4_Name = GPIO_PORTB_IS[2]
+	Group_3_Item_4_Comment = "Bit 2 "
+	Group_3_Item_4_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x4)>>2);
+	Group_3_Item_4_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<2)|(GetDWordValue(0,0x40005404)&~0x4));
+	
+	Group_3_Item_5_Name = GPIO_PORTB_IS[3]
+	Group_3_Item_5_Comment = "Bit 3 "
+	Group_3_Item_5_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x8)>>3);
+	Group_3_Item_5_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<3)|(GetDWordValue(0,0x40005404)&~0x8));
+
+	Group_3_Item_6_Name = GPIO_PORTB_IS[4]
+	Group_3_Item_6_Comment = "Bit 4 "
+	Group_3_Item_6_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x10)>>4);
+	Group_3_Item_6_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<4)|(GetDWordValue(0,0x40005404)&~0x10));
+
+	Group_3_Item_7_Name = GPIO_PORTB_IS[5]
+	Group_3_Item_7_Comment = "Bit 5 "
+	Group_3_Item_7_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x20)>>5);
+	Group_3_Item_7_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<5)|(GetDWordValue(0,0x40005404)&~0x20));
+
+	Group_3_Item_8_Name = GPIO_PORTB_IS[6]
+	Group_3_Item_8_Comment = "Bit 6 "
+	Group_3_Item_8_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x40)>>6);
+	Group_3_Item_8_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<6)|(GetDWordValue(0,0x40005404)&~0x40));
+	
+	Group_3_Item_9_Name = GPIO_PORTB_IS[7]
+	Group_3_Item_9_Comment = "Bit 7 "
+	Group_3_Item_9_Type = 1, edge-sensitive, level-sensitive
+	Group_3_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005404)&0x80)>>7);
+	Group_3_Item_9_DecodingProc = SetDWordValue(0, 0x40005404, (GetInt()<<7)|(GetDWordValue(0,0x40005404)&~0x80));
+
+
+Group_4_Name = PORTB INTERRUPT BOTH EDGES REGISTER
+Group_4_Comment = "When the corresponding bit in the GPIO Interrupt Sense (GPIOIS) register is set to detect edges, bits set to High in GPIOIBE configure the corresponding pin to detect both rising and falling edges, regardless of the corresponding bit in the GPIO Interrupt Event (GPIOIEV) register. Clearing a bit configures the pin to be controlled by GPIOIEV. All bits are cleared by a reset.\n•Base address: 4000 5408h.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : Interrupt generation is controlled by the GPIO Interrupt Event (GPIOIEV)\n•Bit set to 1 : Both edges on the corresponding pin trigger an interrupt"
+Group_4_CodingProc = SetString("0x"+GetDWordValue(0,0x40005408).toString(16));
+
+Group_4_ItemsNumber = 9
+	Group_4_Item_1_Name = GPIO_PORTB_IBE
+	Group_4_Item_1_Comment = "The IBE values are defined as follows\n•Bit set to 0 : Interrupt generation is controlled by the GPIO Interrupt Event(GPIOIEV)\n•Bit set to 1 : Both edges on the corresponding pin trigger an interrupt\nThe bits [31:8] are reserved."
+	Group_4_Item_1_Type = 0
+	Group_4_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005408)&0xFF).toString(16));
+	Group_4_Item_1_DecodingProc = SetWordValue(0,0x40005408,(parseInt(GetString())&0xFF));
+
+	Group_4_Item_2_Name = GPIO_PORTB_IBE[0]
+	Group_4_Item_2_Comment = "Bit 0 "
+	Group_4_Item_2_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x1)>>0);
+	Group_4_Item_2_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<0)|(GetDWordValue(0,0x40005408)&~0x1));
+
+	Group_4_Item_3_Name = GPIO_PORTB_IBE[1]
+	Group_4_Item_3_Comment = "Bit 1 "
+	Group_4_Item_3_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x2)>>1);
+	Group_4_Item_3_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<1)|(GetDWordValue(0,0x40005408)&~0x2));
+
+	Group_4_Item_4_Name = GPIO_PORTB_IBE[2]
+	Group_4_Item_4_Comment = "Bit 2 "
+	Group_4_Item_4_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x4)>>2);
+	Group_4_Item_4_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<2)|(GetDWordValue(0,0x40005408)&~0x4));
+	
+	Group_4_Item_5_Name = GPIO_PORTB_IBE[3]
+	Group_4_Item_5_Comment = "Bit 3 "
+	Group_4_Item_5_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x8)>>3);
+	Group_4_Item_5_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<3)|(GetDWordValue(0,0x40005408)&~0x8));
+
+	Group_4_Item_6_Name = GPIO_PORTB_IBE[4]
+	Group_4_Item_6_Comment = "Bit 4 "
+	Group_4_Item_6_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x10)>>4);
+	Group_4_Item_6_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<4)|(GetDWordValue(0,0x40005408)&~0x10));
+
+	Group_4_Item_7_Name = GPIO_PORTB_IBE[5]
+	Group_4_Item_7_Comment = "Bit 5 "
+	Group_4_Item_7_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x20)>>5);
+	Group_4_Item_7_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<5)|(GetDWordValue(0,0x40005408)&~0x20));
+
+	Group_4_Item_8_Name = GPIO_PORTB_IBE[6]
+	Group_4_Item_8_Comment = "Bit 6 "
+	Group_4_Item_8_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x40)>>6);
+	Group_4_Item_8_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<6)|(GetDWordValue(0,0x40005408)&~0x40));
+	
+	Group_4_Item_9_Name = GPIO_PORTB_IBE[7]
+	Group_4_Item_9_Comment = "Bit 7 "
+	Group_4_Item_9_Type = 1, Interrupt generation is controlled by the GPIOIEV, Both edges trigger an interrupt
+	Group_4_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005408)&0x80)>>7);
+	Group_4_Item_9_DecodingProc = SetDWordValue(0, 0x40005408, (GetInt()<<7)|(GetDWordValue(0,0x40005408)&~0x80));
+
+Group_5_Name = PORTB INTERRUPT EVENT REGISTER
+Group_5_Comment = "The GPIOIEV register is the interrupt event register. Bits set to High in GPIOIEV configure the corresponding pin to detect rising edges or high levels, depending on the corresponding bit value in the GPIO Interrupt Sense (GPIOIS) register. Clearing a bit configures the pin to detect falling edges or low levels, depending on the corresponding bit value in GPIOIS. All bits are cleared by a reset.\n•Base address: 4000 540Ch.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : Falling edge or Low levels on corresponding pins trigger interrupts\n•Bit set to 1 : Rising edge or High levels on corresponding pins trigger interrupts"
+Group_5_CodingProc = SetString("0x"+GetDWordValue(0,0x4000540C).toString(16));
+
+Group_5_ItemsNumber = 9
+	Group_5_Item_1_Name = GPIO_PORTB_IEV
+	Group_5_Item_1_Comment = "The IEV values are defined as follows\n•Bit set to 0 : Falling edge or Low levels triggers interrupts\n•Bit set to 1 : Rising edge or High levels triggers interrupts\nThe bits [31:8] are reserved."
+	Group_5_Item_1_Type = 0
+	Group_5_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x4000540C)&0xFF).toString(16));
+	Group_5_Item_1_DecodingProc = SetWordValue(0,0x4000540C,(parseInt(GetString())&0xFF));
+
+	Group_5_Item_2_Name = GPIO_PORTB_IEV[0]
+	Group_5_Item_2_Comment = "Bit 0 "
+	Group_5_Item_2_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x1)>>0);
+	Group_5_Item_2_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<0)|(GetDWordValue(0,0x4000540C)&~0x1));
+
+	Group_5_Item_3_Name = GPIO_PORTB_IEV[1]
+	Group_5_Item_3_Comment = "Bit 1 "
+	Group_5_Item_3_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x2)>>1);
+	Group_5_Item_3_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<1)|(GetDWordValue(0,0x4000540C)&~0x2));
+
+	Group_5_Item_4_Name = GPIO_PORTB_IEV[2]
+	Group_5_Item_4_Comment = "Bit 2 "
+	Group_5_Item_4_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x4)>>2);
+	Group_5_Item_4_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<2)|(GetDWordValue(0,0x4000540C)&~0x4));
+	
+	Group_5_Item_5_Name = GPIO_PORTB_IEV[3]
+	Group_5_Item_5_Comment = "Bit 3 "
+	Group_5_Item_5_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x8)>>3);
+	Group_5_Item_5_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<3)|(GetDWordValue(0,0x4000540C)&~0x8));
+
+	Group_5_Item_6_Name = GPIO_PORTB_IEV[4]
+	Group_5_Item_6_Comment = "Bit 4 "
+	Group_5_Item_6_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x10)>>4);
+	Group_5_Item_6_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<4)|(GetDWordValue(0,0x4000540C)&~0x10));
+
+	Group_5_Item_7_Name = GPIO_PORTB_IEV[5]
+	Group_5_Item_7_Comment = "Bit 5 "
+	Group_5_Item_7_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x20)>>5);
+	Group_5_Item_7_DecodingProc = SetDWordValue(0, 0x4000540C, (0x4000540C()<<5)|(GetDWordValue(0,0x4000540C)&~0x20));
+
+	Group_5_Item_8_Name = GPIO_PORTB_IEV[6]
+	Group_5_Item_8_Comment = "Bit 6 "
+	Group_5_Item_8_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x40)>>6);
+	Group_5_Item_8_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<6)|(GetDWordValue(0,0x4000540C)&~0x40));
+	
+	Group_5_Item_9_Name = GPIO_PORTB_IEV[7]
+	Group_5_Item_9_Comment = "Bit 7 "
+	Group_5_Item_9_Type = 1, Falling edge or Low levels triggers interrupts, Rising edge or High levels triggers interrupts
+	Group_5_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x4000540C)&0x80)>>7);
+	Group_5_Item_9_DecodingProc = SetDWordValue(0, 0x4000540C, (GetInt()<<7)|(GetDWordValue(0,0x4000540C)&~0x80));
+
+Group_6_Name = PORTB INTERRUPT MASK REGISTER
+Group_6_Comment = "The GPIOIM register is the interrupt mask register. Bits set to High in GPIOIM allow the corresponding pins to trigger their individual interrupts and the combined GPIOINTR line. Clearing a bit disables interrupt triggering on that pin. All bits are cleared by a reset.\n•Base address: 4000 5410h.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : Corresponding pin interrupt is masked\n•Bit set to 1 : Corresponding pin interrupt is not masked"
+Group_6_CodingProc = SetString("0x"+GetDWordValue(0,0x40005410).toString(16));
+
+Group_6_ItemsNumber = 9
+	Group_6_Item_1_Name = GPIO_PORTB_IM
+	Group_6_Item_1_Comment = "The IM values are defined as follows\n•Bit set to 0 : Corresponding pin interrupt is masked\n•Bit set to 1 : Corresponding pin interrupt is not masked\nThe bits [31:8] are reserved."
+	Group_6_Item_1_Type = 0
+	Group_6_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005410)&0xFF).toString(16));
+	Group_6_Item_1_DecodingProc = SetWordValue(0,0x40005410,(parseInt(GetString())&0xFF));
+
+	Group_6_Item_2_Name = GPIO_PORTB_IM[0]
+	Group_6_Item_2_Comment = "Bit 0 "
+	Group_6_Item_2_Type = 1, Masked, Not masked
+	Group_6_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x1)>>0);
+	Group_6_Item_2_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<0)|(GetDWordValue(0,0x40005410)&~0x1));
+
+	Group_6_Item_3_Name = GPIO_PORTB_IM[1]
+	Group_6_Item_3_Comment = "Bit 1 "
+	Group_6_Item_3_Type = 1, Masked, Not masked
+	Group_6_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x2)>>1);
+	Group_6_Item_3_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<1)|(GetDWordValue(0,0x40005410)&~0x2));
+
+	Group_6_Item_4_Name = GPIO_PORTB_IM[2]
+	Group_6_Item_4_Comment = "Bit 2 "
+	Group_6_Item_4_Type = 1, Masked, Not masked
+	Group_6_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x4)>>2);
+	Group_6_Item_4_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<2)|(GetDWordValue(0,0x40005410)&~0x4));
+	
+	Group_6_Item_5_Name = GPIO_PORTB_IM[3]
+	Group_6_Item_5_Comment = "Bit 3 "
+	Group_6_Item_5_Type = 1, Masked, Not masked
+	Group_6_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x8)>>3);
+	Group_6_Item_5_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<3)|(GetDWordValue(0,0x40005410)&~0x8));
+
+	Group_6_Item_6_Name = GPIO_PORTB_IM[4]
+	Group_6_Item_6_Comment = "Bit 4 "
+	Group_6_Item_6_Type = 1, Masked, Not masked
+	Group_6_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x10)>>4);
+	Group_6_Item_6_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<4)|(GetDWordValue(0,0x40005410)&~0x10));
+
+	Group_6_Item_7_Name = GPIO_PORTB_IM[5]
+	Group_6_Item_7_Comment = "Bit 5 "
+	Group_6_Item_7_Type = 1, Masked, Not masked
+	Group_6_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x20)>>5);
+	Group_6_Item_7_DecodingProc = SetDWordValue(0, 0x40005410, (0x40005410()<<5)|(GetDWordValue(0,0x40005410)&~0x20));
+
+	Group_6_Item_8_Name = GPIO_PORTB_IM[6]
+	Group_6_Item_8_Comment = "Bit 6 "
+	Group_6_Item_8_Type = 1, Masked, Not masked
+	Group_6_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x40)>>6);
+	Group_6_Item_8_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<6)|(GetDWordValue(0,0x40005410)&~0x40));
+	
+	Group_6_Item_9_Name = GPIO_PORTB_IM[7]
+	Group_6_Item_9_Comment = "Bit 7 "
+	Group_6_Item_9_Type = 1, Masked, Not masked
+	Group_6_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005410)&0x80)>>7);
+	Group_6_Item_9_DecodingProc = SetDWordValue(0, 0x40005410, (GetInt()<<7)|(GetDWordValue(0,0x40005410)&~0x80));
+	
+Group_7_Name = PORTB RAW INTERRUPT STATUS REGISTER
+Group_7_Comment = "The GPIORIS register is the raw interrupt status register. Bits read High in GPIORIS reflect the status of interrupt trigger conditions detected (raw, prior to masking), indicating that all the requirements have been met, before they are finally allowed to trigger by the GPIO Interrupt Mask (GPIOIM) register. Bits read as zero indicate that corresponding input pins have not initiated an interrupt. All bits are cleared by a reset.\n•Base address: 4000 5414h.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : Corresponding pin interrupt requirements not met\n•Bit set to 1 : Corresponding pin interrupt has met requirements"
+Group_7_CodingProc = SetString("0x"+GetDWordValue(0,0x40005414).toString(16));
+
+Group_7_ItemsNumber = 9
+	Group_7_Item_1_Name = GPIO_PORTB_RIS
+	Group_7_Item_1_Comment = "The RIS values are defined as follows\n•Bit set to 0 : Interrupt requirements not met\n•Bit set to 1 : Interrupt has met requirements\nThe bits [31:8] are reserved."
+	Group_7_Item_1_Type = 0
+	Group_7_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005414)&0xFF).toString(16));
+	Group_7_Item_1_DecodingProc = SetWordValue(0,0x40005414,(parseInt(GetString())&0xFF));
+
+	Group_7_Item_2_Name = GPIO_PORTB_RIS[0]
+	Group_7_Item_2_Comment = "Bit 0 "
+	Group_7_Item_2_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x1)>>0);
+	Group_7_Item_2_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<0)|(GetDWordValue(0,0x40005414)&~0x1));
+
+	Group_7_Item_3_Name = GPIO_PORTB_RIS[1]
+	Group_7_Item_3_Comment = "Bit 1 "
+	Group_7_Item_3_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x2)>>1);
+	Group_7_Item_3_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<1)|(GetDWordValue(0,0x40005414)&~0x2));
+
+	Group_7_Item_4_Name = GPIO_PORTB_RIS[2]
+	Group_7_Item_4_Comment = "Bit 2 "
+	Group_7_Item_4_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x4)>>2);
+	Group_7_Item_4_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<2)|(GetDWordValue(0,0x40005414)&~0x4));
+	
+	Group_7_Item_5_Name = GPIO_PORTB_RIS[3]
+	Group_7_Item_5_Comment = "Bit 3 "
+	Group_7_Item_5_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x8)>>3);
+	Group_7_Item_5_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<3)|(GetDWordValue(0,0x40005414)&~0x8));
+
+	Group_7_Item_6_Name = GPIO_PORTB_RIS[4]
+	Group_7_Item_6_Comment = "Bit 4 "
+	Group_7_Item_6_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x10)>>4);
+	Group_7_Item_6_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<4)|(GetDWordValue(0,0x40005414)&~0x10));
+
+	Group_7_Item_7_Name = GPIO_PORTB_RIS[5]
+	Group_7_Item_7_Comment = "Bit 5 "
+	Group_7_Item_7_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x20)>>5);
+	Group_7_Item_7_DecodingProc = SetDWordValue(0, 0x40005414, (0x40005414()<<5)|(GetDWordValue(0,0x40005414)&~0x20));
+
+	Group_7_Item_8_Name = GPIO_PORTB_RIS[6]
+	Group_7_Item_8_Comment = "Bit 6 "
+	Group_7_Item_8_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x40)>>6);
+	Group_7_Item_8_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<6)|(GetDWordValue(0,0x40005414)&~0x40));
+	
+	Group_7_Item_9_Name = GPIO_PORTB_RIS[7]
+	Group_7_Item_9_Comment = "Bit 7 "
+	Group_7_Item_9_Type = 1, Interrupt requirements not met, Interrupt has met requirements
+	Group_7_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005414)&0x80)>>7);
+	Group_7_Item_9_DecodingProc = SetDWordValue(0, 0x40005414, (GetInt()<<7)|(GetDWordValue(0,0x40005414)&~0x80));
+	
+Group_8_Name = PORTB MASKED INTERRUPT STATUS REGISTER
+Group_8_Comment = "The GPIOMIS register is the masked interrupt status register. Bits read High in GPIOMIS reflect the status of input lines triggering an interrupt. Bits read as Low indicate that either no interrupt has been generated, or the interrupt is masked.\nGPIOMIS is the state of the interrupt after masking.\n•Base address: 4000 5418h.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : GPIO line interrupt not active\n•Bit set to 1 : GPIO line asserting interrupt"
+Group_8_CodingProc = SetString("0x"+GetDWordValue(0,0x40005418).toString(16));
+
+Group_8_ItemsNumber = 9
+	Group_8_Item_1_Name = GPIO_PORTB_MIS
+	Group_8_Item_1_Comment = "The MIS values are defined as follows:\n•Bit set to 0 : Corresponding GPIO line interrupt not active\n•Bit set to 1 : Corresponding GPIO line asserting interrupt\nThe bits [31:8] are reserved."
+	Group_8_Item_1_Type = 0
+	Group_8_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005418)&0xFF).toString(16));
+	Group_8_Item_1_DecodingProc = SetWordValue(0,0x40005418,(parseInt(GetString())&0xFF));
+
+	Group_8_Item_2_Name = GPIO_PORTB_MIS[0]
+	Group_8_Item_2_Comment = "Bit 0 "
+	Group_8_Item_2_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x1)>>0);
+	Group_8_Item_2_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<0)|(GetDWordValue(0,0x40005418)&~0x1));
+
+	Group_8_Item_3_Name = GPIO_PORTB_MIS[1]
+	Group_8_Item_3_Comment = "Bit 1 "
+	Group_8_Item_3_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x2)>>1);
+	Group_8_Item_3_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<1)|(GetDWordValue(0,0x40005418)&~0x2));
+
+	Group_8_Item_4_Name = GPIO_PORTB_MIS[2]
+	Group_8_Item_4_Comment = "Bit 2 "
+	Group_8_Item_4_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x4)>>2);
+	Group_8_Item_4_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<2)|(GetDWordValue(0,0x40005418)&~0x4));
+
+	Group_8_Item_5_Name = GPIO_PORTB_MIS[3]
+	Group_8_Item_5_Comment = "Bit 3 "
+	Group_8_Item_5_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x8)>>3);
+	Group_8_Item_5_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<3)|(GetDWordValue(0,0x40005418)&~0x8));
+
+	Group_8_Item_6_Name = GPIO_PORTB_MIS[4]
+	Group_8_Item_6_Comment = "Bit 4 "
+	Group_8_Item_6_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x10)>>4);
+	Group_8_Item_6_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<4)|(GetDWordValue(0,0x40005418)&~0x10));
+
+	Group_8_Item_7_Name = GPIO_PORTB_MIS[5]
+	Group_8_Item_7_Comment = "Bit 5 "
+	Group_8_Item_7_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x20)>>5);
+	Group_8_Item_7_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<5)|(GetDWordValue(0,0x40005418)&~0x20));
+
+	Group_8_Item_8_Name = GPIO_PORTB_MIS[6]
+	Group_8_Item_8_Comment = "Bit 6 "
+	Group_8_Item_8_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x40)>>6);
+	Group_8_Item_8_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<6)|(GetDWordValue(0,0x40005418)&~0x40));
+	
+	Group_8_Item_9_Name = GPIO_PORTB_MIS[7]
+	Group_8_Item_9_Comment = "Bit 7 "
+	Group_8_Item_9_Type = 1, GPIO line interrupt not active, GPIO line asserting interrupt
+	Group_8_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x80)>>7);
+	Group_8_Item_9_DecodingProc = SetDWordValue(0, 0x40005418, (GetInt()<<7)|(GetDWordValue(0,0x40005418)&~0x80));
+
+Group_9_Name = PORTB INTERRUPT CLEAR REGISTER
+Group_9_Comment = "The GPIOICR register is the interrupt clear register. Writing a 1 to a bit in this register clears the corresponding interrupt edge detection logic register. Writing a 0 has no effect.\n•Base address: 4000 541Ch.\n•Reset Value: 0000 0000h.\n•0 : Corresponding interrupt is unaffected\n•1 : Corresponding interrupt is cleared"
+Group_9_CodingProc = SetString("0x"+GetDWordValue(0,0x4000541C).toString(16));
+
+Group_9_ItemsNumber = 9
+	Group_9_Item_1_Name = GPIO_PORTB_ICR
+	Group_9_Item_1_Comment = "The IC values are defined as follows\n•0 : Corresponding interrupt is unaffected\n•1 : Corresponding interrupt is cleared\nThe bits [31:8] are reserved."
+	Group_9_Item_1_Type = 0
+	Group_9_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x4000541C)&0xFF).toString(16));
+	Group_9_Item_1_DecodingProc = SetWordValue(0,0x4000541C,(parseInt(GetString())&0xFF));
+
+	Group_9_Item_2_Name = GPIO_PORTB_ICR[0]
+	Group_9_Item_2_Comment = "Bit 0 "
+	Group_9_Item_2_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x1)>>0);
+	Group_9_Item_2_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<0)|(GetDWordValue(0,0x4000541C)&~0x1));
+
+	Group_9_Item_3_Name = GPIO_PORTB_ICR[1]
+	Group_9_Item_3_Comment = "Bit 1 "
+	Group_9_Item_3_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x2)>>1);
+	Group_9_Item_3_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<1)|(GetDWordValue(0,0x4000541C)&~0x2));
+
+	Group_9_Item_4_Name = GPIO_PORTB_ICR[2]
+	Group_9_Item_4_Comment = "Bit 2 "
+	Group_9_Item_4_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x4)>>2);
+	Group_9_Item_4_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<2)|(GetDWordValue(0,0x4000541C)&~0x4));
+
+	Group_9_Item_5_Name = GPIO_PORTB_ICR[3]
+	Group_9_Item_5_Comment = "Bit 3 "
+	Group_9_Item_5_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x8)>>3);
+	Group_9_Item_5_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<3)|(GetDWordValue(0,0x4000541C)&~0x8));
+
+	Group_9_Item_6_Name = GPIO_PORTB_ICR[4]
+	Group_9_Item_6_Comment = "Bit 4 "
+	Group_9_Item_6_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x10)>>4);
+	Group_9_Item_6_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<4)|(GetDWordValue(0,0x4000541C)&~0x10));
+
+	Group_9_Item_7_Name = GPIO_PORTB_ICR[5]
+	Group_9_Item_7_Comment = "Bit 5 "
+	Group_9_Item_7_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x20)>>5);
+	Group_9_Item_7_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<5)|(GetDWordValue(0,0x4000541C)&~0x20));
+
+	Group_9_Item_8_Name = GPIO_PORTB_ICR[6]
+	Group_9_Item_8_Comment = "Bit 6 "
+	Group_9_Item_8_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x40)>>6);
+	Group_9_Item_8_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<6)|(GetDWordValue(0,0x4000541C)&~0x40));
+	
+	Group_9_Item_9_Name = GPIO_PORTB_ICR[7]
+	Group_9_Item_9_Comment = "Bit 7 "
+	Group_9_Item_9_Type = 1, Interrupt is unaffected, Interrupt is cleared
+	Group_9_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x4000541C)&0x80)>>7);
+	Group_9_Item_9_DecodingProc = SetDWordValue(0, 0x4000541C, (GetInt()<<7)|(GetDWordValue(0,0x4000541C)&~0x80));
+
+Group_10_Name = PORTB ALTERNATE FUNCTION SELECT REGISTER
+Group_10_Comment = "The GPIOAFSEL register is the mode control select register. Writing a 1 to any bit in this register selects the hardware control for the corresponding GPIO line. All bits are cleared by a reset, therefore no GPIO line is set to hardware control by default.\n•Base address: 4000 5420h.\n•Reset Value: 0000 0000h.\n•Bit set to 0 : Software control of corresponding GPIO line (GPIO mode)\n•Bit set to 1 : Hardware control of corresponding GPIO line (alternate hardware function)."
+Group_10_CodingProc = SetString("0x"+GetDWordValue(0,0x40005420).toString(16));
+
+Group_10_ItemsNumber = 9
+	Group_10_Item_1_Name = GPIO_PORTB_AFSEL
+	Group_10_Item_1_Comment = "The AFSEL values are defined as follows\n•0 : Corresponding interrupt is unaffected\n•1 : Corresponding interrupt is cleared\nThe bits [31:8] are reserved."
+	Group_10_Item_1_Type = 0
+	Group_10_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005420)&0xFF).toString(16));
+	Group_10_Item_1_DecodingProc = SetWordValue(0,0x40005420,(parseInt(GetString())&0xFF));
+
+	Group_10_Item_2_Name = GPIO_PORTB_AFSEL[0]
+	Group_10_Item_2_Comment = "Bit 0 "
+	Group_10_Item_2_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x1)>>0);
+	Group_10_Item_2_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<0)|(GetDWordValue(0,0x40005420)&~0x1));
+
+	Group_10_Item_3_Name = GPIO_PORTB_AFSEL[1]
+	Group_10_Item_3_Comment = "Bit 1 "
+	Group_10_Item_3_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005418)&0x2)>>1);
+	Group_10_Item_3_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<1)|(GetDWordValue(0,0x40005420)&~0x2));
+
+	Group_10_Item_4_Name = GPIO_PORTB_AFSEL[2]
+	Group_10_Item_4_Comment = "Bit 2 "
+	Group_10_Item_4_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x4)>>2);
+	Group_10_Item_4_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<2)|(GetDWordValue(0,0x40005420)&~0x4));
+
+	Group_10_Item_5_Name = GPIO_PORTB_AFSEL[3]
+	Group_10_Item_5_Comment = "Bit 3 "
+	Group_10_Item_5_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x8)>>3);
+	Group_10_Item_5_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<3)|(GetDWordValue(0,0x40005420)&~0x8));
+
+	Group_10_Item_6_Name = GPIO_PORTB_AFSEL[4]
+	Group_10_Item_6_Comment = "Bit 4 "
+	Group_10_Item_6_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x10)>>4);
+	Group_10_Item_6_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<4)|(GetDWordValue(0,0x40005420)&~0x10));
+
+	Group_10_Item_7_Name = GPIO_PORTB_AFSEL[5]
+	Group_10_Item_7_Comment = "Bit 5 "
+	Group_10_Item_7_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x20)>>5);
+	Group_10_Item_7_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<5)|(GetDWordValue(0,0x40005420)&~0x20));
+
+	Group_10_Item_8_Name = GPIO_PORTB_AFSEL[6]
+	Group_10_Item_8_Comment = "Bit 6 "
+	Group_10_Item_8_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x40)>>6);
+	Group_10_Item_8_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<6)|(GetDWordValue(0,0x40005420)&~0x40));
+	
+	Group_10_Item_9_Name = GPIO_PORTB_AFSEL[7]
+	Group_10_Item_9_Comment = "Bit 7 "
+	Group_10_Item_9_Type = 1, GPIO mode, Alternate hardware function
+	Group_10_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005420)&0x80)>>7);
+	Group_10_Item_9_DecodingProc = SetDWordValue(0, 0x40005420, (GetInt()<<7)|(GetDWordValue(0,0x40005420)&~0x80));
+
+Group_11_Name = PORTB 2mA DRIVE SELECT REGISTER
+Group_11_Comment = "The GPIODR2R register is the 2-mA drive control register. It allows for each GPIO signal in the port to be individually configured without affecting the other pads. When writing a DR2R bit for a GPIO signal, the corresponding DR4R bit in the GPIODR4R register and the DR8R bit in the GPIODR8 register are automatically cleared by hardware.\n•Base address: 4000 5500h.\n•Reset Value: 0000 00FFh.\n•Bit set to 1 : enabled\n•Bit set to 0 : No "
+Group_11_CodingProc = SetString("0x"+GetDWordValue(0,0x40005500).toString(16));
+
+Group_11_ItemsNumber = 9
+	Group_11_Item_1_Name = GPIO_PORTB_DR2R
+	Group_11_Item_1_Comment = "The DR2R values are defined as follows\n•0 : Output Pad 2-mA Drive Disabled\n•1 : Output Pad 2-mA Drive Enabled\nA write of 1 to either GPIODR4[n] or GPIODR8[n] clears the corresponding 2-mA enable bit. The change is effective on the second clock cycle after the write.The bits [31:8] are reserved."
+	Group_11_Item_1_Type = 0
+	Group_11_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005500)&0xFF).toString(16));
+	Group_11_Item_1_DecodingProc = SetWordValue(0,0x40005500,(parseInt(GetString())&0xFF));
+
+	Group_11_Item_2_Name = GPIO_PORTB_DR2R[0]
+	Group_11_Item_2_Comment = "Bit 0 "
+	Group_11_Item_2_Type = 1, Disabled, Enabled
+	Group_11_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x1)>>0);
+	Group_11_Item_2_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<0)|(GetDWordValue(0,0x40005500)&~0x1));
+
+	Group_11_Item_3_Name = GPIO_PORTB_DR2R[1]
+	Group_11_Item_3_Comment = "Bit 1 "
+	Group_11_Item_3_Type = 1, Disabled, Enabled
+	Group_11_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x2)>>1);
+	Group_11_Item_3_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<1)|(GetDWordValue(0,0x40005500)&~0x2));
+
+	Group_11_Item_4_Name = GPIO_PORTB_DR2R[2]
+	Group_11_Item_4_Comment = "Bit 2 "
+	Group_11_Item_4_Type = 1, Disabled, Enabled
+	Group_11_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x4)>>2);
+	Group_11_Item_4_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<2)|(GetDWordValue(0,0x40005500)&~0x4));
+
+	Group_11_Item_5_Name = GPIO_PORTB_DR2R[3]
+	Group_11_Item_5_Comment = "Bit 3 "
+	Group_11_Item_5_Type = 1, Disabled, Enabled
+	Group_11_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x8)>>3);
+	Group_11_Item_5_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<3)|(GetDWordValue(0,0x40005500)&~0x8));
+
+	Group_11_Item_6_Name = GPIO_PORTB_DR2R[4]
+	Group_11_Item_6_Comment = "Bit 4 "
+	Group_11_Item_6_Type = 1, Disabled, Enabled
+	Group_11_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x10)>>4);
+	Group_11_Item_6_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<4)|(GetDWordValue(0,0x40005500)&~0x10));
+
+	Group_11_Item_7_Name = GPIO_PORTB_DR2R[5]
+	Group_11_Item_7_Comment = "Bit 5 "
+	Group_11_Item_7_Type = 1, Disabled, Enabled
+	Group_11_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x20)>>5);
+	Group_11_Item_7_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<5)|(GetDWordValue(0,0x40005500)&~0x20));
+
+	Group_11_Item_8_Name = GPIO_PORTB_DR2R[6]
+	Group_11_Item_8_Comment = "Bit 6 "
+	Group_11_Item_8_Type = 1, Disabled, Enabled
+	Group_11_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x40)>>6);
+	Group_11_Item_8_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<6)|(GetDWordValue(0,0x40005500)&~0x40));
+	
+	Group_11_Item_9_Name = GPIO_PORTB_DR2R[7]
+	Group_11_Item_9_Comment = "Bit 7 "
+	Group_11_Item_9_Type = 1, Disabled, Enabled
+	Group_11_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005500)&0x80)>>7);
+	Group_11_Item_9_DecodingProc = SetDWordValue(0, 0x40005500, (GetInt()<<7)|(GetDWordValue(0,0x40005500)&~0x80));
+
+Group_12_Name = PORTB 4mA DRIVE SELECT REGISTER
+Group_12_Comment = "GPIOB Direction\n•Base address: 4000 5504h.\n•Reset Value: 0000 0000h.\n•Bit set to 1 : output\n•Bit set to 0 : input"
+Group_12_CodingProc = SetString("0x"+GetDWordValue(0,0x40005504).toString(16));
+
+Group_12_ItemsNumber = 9
+	Group_12_Item_1_Name = GPIO_PORTB_DR4R
+	Group_12_Item_1_Comment = "The DR4R values are defined as follows\n•0 : Output Pad 4-mA Drive Disabled\n•1 : Output Pad 4-mA Drive Enabled\nA write of 1 to either GPIODR2[n] or GPIODR8[n] clears the corresponding 4-mA enable bit. The change is effective on the second clock cycle after the write.The bits [31:8] are reserved."
+	Group_12_Item_1_Type = 0
+	Group_12_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005504)&0xFF).toString(16));
+	Group_12_Item_1_DecodingProc = SetWordValue(0,0x40005504,(parseInt(GetString())&0xFF));
+
+	Group_12_Item_2_Name = GPIO_PORTB_DR4R[0]
+	Group_12_Item_2_Comment = "Bit 0 "
+	Group_12_Item_2_Type = 1, Disabled, Enabled
+	Group_12_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x1)>>0);
+	Group_12_Item_2_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<0)|(GetDWordValue(0,0x40005504)&~0x1));
+
+	Group_12_Item_3_Name = GPIO_PORTB_DR4R[1]
+	Group_12_Item_3_Comment = "Bit 1 "
+	Group_12_Item_3_Type = 1, Disabled, Enabled
+	Group_12_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x2)>>1);
+	Group_12_Item_3_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<1)|(GetDWordValue(0,0x40005504)&~0x2));
+
+	Group_12_Item_4_Name = GPIO_PORTB_DR4R[2]
+	Group_12_Item_4_Comment = "Bit 2 "
+	Group_12_Item_4_Type = 1, Disabled, Enabled
+	Group_12_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x4)>>2);
+	Group_12_Item_4_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<2)|(GetDWordValue(0,0x40005504)&~0x4));
+
+	Group_12_Item_5_Name = GPIO_PORTB_DR4R[3]
+	Group_12_Item_5_Comment = "Bit 3 "
+	Group_12_Item_5_Type = 1, Disabled, Enabled
+	Group_12_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x8)>>3);
+	Group_12_Item_5_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<3)|(GetDWordValue(0,0x40005504)&~0x8));
+
+	Group_12_Item_6_Name = GPIO_PORTB_DR4R[4]
+	Group_12_Item_6_Comment = "Bit 4 "
+	Group_12_Item_6_Type = 1, Disabled, Enabled
+	Group_12_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x10)>>4);
+	Group_12_Item_6_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<4)|(GetDWordValue(0,0x40005504)&~0x10));
+
+	Group_12_Item_7_Name = GPIO_PORTB_DR4R[5]
+	Group_12_Item_7_Comment = "Bit 5 "
+	Group_12_Item_7_Type = 1, Disabled, Enabled
+	Group_12_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x20)>>5);
+	Group_12_Item_7_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<5)|(GetDWordValue(0,0x40005504)&~0x20));
+
+	Group_12_Item_8_Name = GPIO_PORTB_DR4R[6]
+	Group_12_Item_8_Comment = "Bit 6 "
+	Group_12_Item_8_Type = 1, Disabled, Enabled
+	Group_12_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x40)>>6);
+	Group_12_Item_8_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<6)|(GetDWordValue(0,0x40005504)&~0x40));
+	
+	Group_12_Item_9_Name = GPIO_PORTB_DR4R[7]
+	Group_12_Item_9_Comment = "Bit 7 "
+	Group_12_Item_9_Type = 1, Disabled, Enabled
+	Group_12_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005504)&0x80)>>7);
+	Group_12_Item_9_DecodingProc = SetDWordValue(0, 0x40005504, (GetInt()<<7)|(GetDWordValue(0,0x40005504)&~0x80));
+	
+Group_13_Name = PORTB 8mA DRIVE SELECT REGISTER
+Group_13_Comment = "The GPIODR8R register is the 8-mA drive control register. It allows for each GPIO signal in the port to be individually configured without affecting the other pads. When writing the DRV8 bit for a GPIO signal, the corresponding DRV2 bit in the GPIODR2R register and the DRV4 bit in the GPIODR4R register are automatically cleared by hardware.\n•Base address: 4000 508h.\n•Reset Value: 0000 0000h."
+Group_13_CodingProc = SetString("0x"+GetDWordValue(0,0x40005508).toString(16));
+
+Group_13_ItemsNumber = 9
+	Group_13_Item_1_Name = GPIO_PORTB_DR8R
+	Group_13_Item_1_Comment = "The DR8R values are defined as follows\n•0 : Output Pad 8-mA Drive Disabled\n•1 : Output Pad 8-mA Drive Enabled\nA write of 1 to either GPIODR2[n] or GPIODR4[n] clears the corresponding 8-mA enable bit. The change is effective on the second clock cycle after the write.The bits [31:8] are reserved."
+	Group_13_Item_1_Type = 0
+	Group_13_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005508)&0xFF).toString(16));
+	Group_13_Item_1_DecodingProc = SetWordValue(0,0x40005508,(parseInt(GetString())&0xFF));
+
+	Group_13_Item_2_Name = GPIO_PORTB_DR8R[0]
+	Group_13_Item_2_Comment = "Bit 0 "
+	Group_13_Item_2_Type = 1, Disabled, Enabled
+	Group_13_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x1)>>0);
+	Group_13_Item_2_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<0)|(GetDWordValue(0,0x40005508)&~0x1));
+
+	Group_13_Item_3_Name = GPIO_PORTB_DR8R[1]
+	Group_13_Item_3_Comment = "Bit 1 "
+	Group_13_Item_3_Type = 1, Disabled, Enabled
+	Group_13_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x2)>>1);
+	Group_13_Item_3_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<1)|(GetDWordValue(0,0x40005508)&~0x2));
+
+	Group_13_Item_4_Name = GPIO_PORTB_DR8R[2]
+	Group_13_Item_4_Comment = "Bit 2 "
+	Group_13_Item_4_Type = 1, Disabled, Enabled
+	Group_13_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x4)>>2);
+	Group_13_Item_4_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<2)|(GetDWordValue(0,0x40005508)&~0x4));
+
+	Group_13_Item_5_Name = GPIO_PORTB_DR8R[3]
+	Group_13_Item_5_Comment = "Bit 3 "
+	Group_13_Item_5_Type = 1, Disabled, Enabled
+	Group_13_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x8)>>3);
+	Group_13_Item_5_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<3)|(GetDWordValue(0,0x40005508)&~0x8));
+
+	Group_13_Item_6_Name = GPIO_PORTB_DR8R[4]
+	Group_13_Item_6_Comment = "Bit 4 "
+	Group_13_Item_6_Type = 1, Disabled, Enabled
+	Group_13_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x10)>>4);
+	Group_13_Item_6_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<4)|(GetDWordValue(0,0x40005508)&~0x10));
+
+	Group_13_Item_7_Name = GPIO_PORTB_DR8R[5]
+	Group_13_Item_7_Comment = "Bit 5 "
+	Group_13_Item_7_Type = 1, Disabled, Enabled
+	Group_13_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x20)>>5);
+	Group_13_Item_7_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<5)|(GetDWordValue(0,0x40005508)&~0x20));
+
+	Group_13_Item_8_Name = GPIO_PORTB_DR8R[6]
+	Group_13_Item_8_Comment = "Bit 6 "
+	Group_13_Item_8_Type = 1, Disabled, Enabled
+	Group_13_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x40)>>6);
+	Group_13_Item_8_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<6)|(GetDWordValue(0,0x40005508)&~0x40));
+	
+	Group_13_Item_9_Name = GPIO_PORTB_DR8R[7]
+	Group_13_Item_9_Comment = "Bit 7 "
+	Group_13_Item_9_Type = 1, Disabled, Enabled
+	Group_13_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005508)&0x80)>>7);
+	Group_13_Item_9_DecodingProc = SetDWordValue(0, 0x40005508, (GetInt()<<7)|(GetDWordValue(0,0x40005508)&~0x80));
+	
+Group_14_Name = PORTB OPEN DRAIN REGISTER
+Group_14_Comment = "The GPIOODR register is the open drain control register. Setting a bit in this register enables the open drain configuration of the corresponding GPIO pad. When open drain mode is enabled, the corresponding bit should also be set in the GPIO Digital Input Enable (GPIODEN) register. Corresponding bits in the drive strength registers (GPIODR2R, GPIODR4R, GPIODR8R, and GPIOSLR ) can be set to achieve the desired rise and fall times. The GPIO acts as an open-drain input if the corresponding bit in the GPIODIR register is cleared. If open drain is selected while the GPIO is configured as an input, the GPIO will remain an input and the open-drain selection has no effect until the GPIO is changed to an output.\n•Base address: 4000 550Ch.\n•Reset Value: 0000 0000h.\n•0 : Open drain configuration is disabled\n•1 : Open drain configuration is enabled"
+Group_14_CodingProc = SetString("0x"+GetDWordValue(0,0x4000550C).toString(16));
+
+Group_14_ItemsNumber = 9
+	Group_14_Item_1_Name = GPIO_PORTB_ODR
+	Group_14_Item_1_Comment = "The ODR values are defined as follows\n•0 : Open drain configuration is disabled\n•1 : Open drain configuration is Enabled\nA write of 1 to either GPIODR2[n] or GPIODR4[n] clears the corresponding 8-mA enable bit. The change is effective on the second clock cycle after the write.The bits [31:8] are reserved."
+	Group_14_Item_1_Type = 0
+	Group_14_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x4000550C)&0xFF).toString(16));
+	Group_14_Item_1_DecodingProc = SetWordValue(0,0x4000550C,(parseInt(GetString())&0xFF));
+
+	Group_14_Item_2_Name = GPIO_PORTB_ODR[0]
+	Group_14_Item_2_Comment = "Bit 0 "
+	Group_14_Item_2_Type = 1, Disabled, Enabled
+	Group_14_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x1)>>0);
+	Group_14_Item_2_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<0)|(GetDWordValue(0,0x4000550C)&~0x1));
+
+	Group_14_Item_3_Name = GPIO_PORTB_ODR[1]
+	Group_14_Item_3_Comment = "Bit 1 "
+	Group_14_Item_3_Type = 1, Disabled, Enabled
+	Group_14_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x2)>>1);
+	Group_14_Item_3_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<1)|(GetDWordValue(0,0x4000550C)&~0x2));
+
+	Group_14_Item_4_Name = GPIO_PORTB_ODR[2]
+	Group_14_Item_4_Comment = "Bit 2 "
+	Group_14_Item_4_Type = 1, Disabled, Enabled
+	Group_14_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x4)>>2);
+	Group_14_Item_4_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<2)|(GetDWordValue(0,0x4000550C)&~0x4));
+
+	Group_14_Item_5_Name = GPIO_PORTB_ODR[3]
+	Group_14_Item_5_Comment = "Bit 3 "
+	Group_14_Item_5_Type = 1, Disabled, Enabled
+	Group_14_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x8)>>3);
+	Group_14_Item_5_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<3)|(GetDWordValue(0,0x4000550C)&~0x8));
+
+	Group_14_Item_6_Name = GPIO_PORTB_ODR[4]
+	Group_14_Item_6_Comment = "Bit 4 "
+	Group_14_Item_6_Type = 1, Disabled, Enabled
+	Group_14_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x10)>>4);
+	Group_14_Item_6_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<4)|(GetDWordValue(0,0x4000550C)&~0x10));
+
+	Group_14_Item_7_Name = GPIO_PORTB_ODR[5]
+	Group_14_Item_7_Comment = "Bit 5 "
+	Group_14_Item_7_Type = 1, Disabled, Enabled
+	Group_14_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x20)>>5);
+	Group_14_Item_7_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<5)|(GetDWordValue(0,0x4000550C)&~0x20));
+
+	Group_14_Item_8_Name = GPIO_PORTB_ODR[6]
+	Group_14_Item_8_Comment = "Bit 6 "
+	Group_14_Item_8_Type = 1, Disabled, Enabled
+	Group_14_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x40)>>6);
+	Group_14_Item_8_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<6)|(GetDWordValue(0,0x4000550C)&~0x40));
+	
+	Group_14_Item_9_Name = GPIO_PORTB_ODR[7]
+	Group_14_Item_9_Comment = "Bit 7 "
+	Group_14_Item_9_Type = 1, Disabled, Enabled
+	Group_14_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x4000550C)&0x80)>>7);
+	Group_14_Item_9_DecodingProc = SetDWordValue(0, 0x4000550C, (GetInt()<<7)|(GetDWordValue(0,0x4000550C)&~0x80));
+	
+Group_15_Name = PORTB PULL-UP SELECT REGISTER
+Group_15_Comment = "The GPIOPUR register is the pull-up control register. When a bit is set to 1, it enables a weak pull-up resistor on the corresponding GPIO signal. Setting a bit in GPIOPUR automatically clears the corresponding bit in the GPIO Pull-Down Select (GPIOPDR) register\n•Base address: 4000 5514h.\n•Reset Value: 0000 00FFh.\n•Bit set to 0 : Pad weak pull-up enabled\n•Bit set to 1 : Pad weak pull-up disabled"
+Group_15_CodingProc = SetString("0x"+GetDWordValue(0,0x40005510).toString(16));
+Group_15_ItemsNumber = 9
+	Group_15_Item_1_Name = GPIO_PORTB_PUR
+	Group_15_Item_1_Comment = "The PUR values are defined as follows\n•0 : Pad weak pull-up disabled\n•1 : Pad weak pull-up enabled\nA write of 1 to GPIOPDR[n] clears the corresponding GPIOPUR[n] enables. The change is effective on the second clock cycle after the write.The bits [31:8] are reserved."
+	Group_15_Item_1_Type = 0
+	Group_15_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005510)&0xFF).toString(16));
+	Group_15_Item_1_DecodingProc = SetWordValue(0,0x40005510,(parseInt(GetString())&0xFF));
+
+	Group_15_Item_2_Name = GPIO_PORTB_PUR[0]
+	Group_15_Item_2_Comment = "Bit 0 "
+	Group_15_Item_2_Type = 1, Disabled, Enabled
+	Group_15_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x1)>>0);
+	Group_15_Item_2_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<0)|(GetDWordValue(0,0x40005510)&~0x1));
+
+	Group_15_Item_3_Name = GPIO_PORTB_PUR[1]
+	Group_15_Item_3_Comment = "Bit 1 "
+	Group_15_Item_3_Type = 1, Disabled, Enabled
+	Group_15_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x2)>>1);
+	Group_15_Item_3_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<1)|(GetDWordValue(0,0x40005510)&~0x2));
+
+	Group_15_Item_4_Name = GPIO_PORTB_PUR[2]
+	Group_15_Item_4_Comment = "Bit 2 "
+	Group_15_Item_4_Type = 1, Disabled, Enabled
+	Group_15_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x4)>>2);
+	Group_15_Item_4_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<2)|(GetDWordValue(0,0x40005510)&~0x4));
+
+	Group_15_Item_5_Name = GPIO_PORTB_PUR[3]
+	Group_15_Item_5_Comment = "Bit 3 "
+	Group_15_Item_5_Type = 1, Disabled, Enabled
+	Group_15_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x8)>>3);
+	Group_15_Item_5_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<3)|(GetDWordValue(0,0x40005510)&~0x8));
+
+	Group_15_Item_6_Name = GPIO_PORTB_PUR[4]
+	Group_15_Item_6_Comment = "Bit 4 "
+	Group_15_Item_6_Type = 1, Disabled, Enabled
+	Group_15_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x10)>>4);
+	Group_15_Item_6_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<4)|(GetDWordValue(0,0x40005510)&~0x10));
+
+	Group_15_Item_7_Name = GPIO_PORTB_PUR[5]
+	Group_15_Item_7_Comment = "Bit 5 "
+	Group_15_Item_7_Type = 1, Disabled, Enabled
+	Group_15_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x20)>>5);
+	Group_15_Item_7_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<5)|(GetDWordValue(0,0x40005510)&~0x20));
+
+	Group_15_Item_8_Name = GPIO_PORTB_PUR[6]
+	Group_15_Item_8_Comment = "Bit 6 "
+	Group_15_Item_8_Type = 1, Disabled, Enabled
+	Group_15_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x40)>>6);
+	Group_15_Item_8_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<6)|(GetDWordValue(0,0x40005510)&~0x40));
+	
+	Group_15_Item_9_Name = GPIO_PORTB_PUR[7]
+	Group_15_Item_9_Comment = "Bit 7 "
+	Group_15_Item_9_Type = 1, Disabled, Enabled
+	Group_15_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005510)&0x80)>>7);
+	Group_15_Item_9_DecodingProc = SetDWordValue(0, 0x40005510, (GetInt()<<7)|(GetDWordValue(0,0x40005510)&~0x80));
+
+Group_16_Name = PORTB PULL-DOWN REGISTER
+Group_16_Comment = "The GPIOPDR register is the pull-down control register. When a bit is set to 1, it enables a weak pull-down resistor on the corresponding GPIO signal. Setting a bit in GPIOPDR automatically clears the corresponding bit in the GPIO Pull-Up Select (GPIOPUR) register\n•Base address: 4000 5400h.\n•Reset Value: 0000 0000h."
+Group_16_CodingProc = SetString("0x"+GetDWordValue(0,0x40005514).toString(16));
+
+Group_16_ItemsNumber = 9
+	Group_16_Item_1_Name = GPIO_PORTB_PDR
+	Group_16_Item_1_Comment = "The PDR values are defined as follows\n•0 : Pad weak pull-down enabled\n•1 : Pad weak pull-down disabled\nA write of 1 to GPIOPUR[n] clears the corresponding GPIOPDR[n] enables. The change is effective on the second clock cycle after the write. The bits [31:8] are reserved."
+	Group_16_Item_1_Type = 0
+	Group_16_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005514)&0xFF).toString(16));
+	Group_16_Item_1_DecodingProc = SetWordValue(0,0x40005514,(parseInt(GetString())&0xFF));
+
+	Group_16_Item_2_Name = GPIO_PORTB_PDR[0]
+	Group_16_Item_2_Comment = "Bit 0 "
+	Group_16_Item_2_Type = 1, Disabled, Enabled
+	Group_16_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x1)>>0);
+	Group_16_Item_2_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<0)|(GetDWordValue(0,0x40005514)&~0x1));
+
+	Group_16_Item_3_Name = GPIO_PORTB_PDR[1]
+	Group_16_Item_3_Comment = "Bit 1 "
+	Group_16_Item_3_Type = 1, Disabled, Enabled
+	Group_16_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x2)>>1);
+	Group_16_Item_3_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<1)|(GetDWordValue(0,0x40005514)&~0x2));
+
+	Group_16_Item_4_Name = GPIO_PORTB_PDR[2]
+	Group_16_Item_4_Comment = "Bit 2 "
+	Group_16_Item_4_Type = 1, Disabled, Enabled
+	Group_16_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x4)>>2);
+	Group_16_Item_4_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<2)|(GetDWordValue(0,0x40005514)&~0x4));
+
+	Group_16_Item_5_Name = GPIO_PORTB_PDR[3]
+	Group_16_Item_5_Comment = "Bit 3 "
+	Group_16_Item_5_Type = 1, Disabled, Enabled
+	Group_16_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x8)>>3);
+	Group_16_Item_5_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<3)|(GetDWordValue(0,0x40005514)&~0x8));
+
+	Group_16_Item_6_Name = GPIO_PORTB_PDR[4]
+	Group_16_Item_6_Comment = "Bit 4 "
+	Group_16_Item_6_Type = 1, Disabled, Enabled
+	Group_16_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x10)>>4);
+	Group_16_Item_6_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<4)|(GetDWordValue(0,0x40005514)&~0x10));
+
+	Group_16_Item_7_Name = GPIO_PORTB_PDR[5]
+	Group_16_Item_7_Comment = "Bit 5 "
+	Group_16_Item_7_Type = 1, Disabled, Enabled
+	Group_16_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x20)>>5);
+	Group_16_Item_7_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<5)|(GetDWordValue(0,0x40005514)&~0x20));
+
+	Group_16_Item_8_Name = GPIO_PORTB_PDR[6]
+	Group_16_Item_8_Comment = "Bit 6 "
+	Group_16_Item_8_Type = 1, Disabled, Enabled
+	Group_16_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x40)>>6);
+	Group_16_Item_8_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<6)|(GetDWordValue(0,0x40005514)&~0x40));
+	
+	Group_16_Item_9_Name = GPIO_PORTB_PDR[7]
+	Group_16_Item_9_Comment = "Bit 7 "
+	Group_16_Item_9_Type = 1, Disabled, Enabled
+	Group_16_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005514)&0x80)>>7);
+	Group_16_Item_9_DecodingProc = SetDWordValue(0, 0x40005514, (GetInt()<<7)|(GetDWordValue(0,0x40005514)&~0x80));
+
+Group_17_Name = PORTB SLEW RATE CONTROL REGISTER
+Group_17_Comment = "The GPIOSLR register is the slew rate control register. Slew rate control is only available when using the 8-mA drive strength option via the GPIO 8-mA Drive Select (GPIODR8R) register\n•Base address: 4000 5518h.\n•Reset Value: 0000 0000h."
+Group_17_CodingProc = SetString("0x"+GetDWordValue(0,0x40005518).toString(16));
+
+Group_17_ItemsNumber = 9
+	Group_17_Item_1_Name = GPIO_PORTB_SLR
+	Group_17_Item_1_Comment = "Slew Rate Limit Enable (8-mA drive only)\nThe SRL values are defined as follows:\n•0 : Slew rate control disabled\n•1 : Slew rate control enabled. The bits [31:8] are reserved."
+	Group_17_Item_1_Type = 0
+	Group_17_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x40005518)&0xFF).toString(17));
+	Group_17_Item_1_DecodingProc = SetWordValue(0,0x40005518,(parseInt(GetString())&0xFF));
+
+	Group_17_Item_2_Name = GPIO_PORTB_SLR[0]
+	Group_17_Item_2_Comment = "Bit 0 "
+	Group_17_Item_2_Type = 1, Disabled, Enabled
+	Group_17_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x1)>>0);
+	Group_17_Item_2_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<0)|(GetDWordValue(0,0x40005518)&~0x1));
+
+	Group_17_Item_3_Name = GPIO_PORTB_SLR[1]
+	Group_17_Item_3_Comment = "Bit 1 "
+	Group_17_Item_3_Type = 1, Disabled, Enabled
+	Group_17_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x2)>>1);
+	Group_17_Item_3_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<1)|(GetDWordValue(0,0x40005518)&~0x2));
+
+	Group_17_Item_4_Name = GPIO_PORTB_SLR[2]
+	Group_17_Item_4_Comment = "Bit 2 "
+	Group_17_Item_4_Type = 1, Disabled, Enabled
+	Group_17_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x4)>>2);
+	Group_17_Item_4_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<2)|(GetDWordValue(0,0x40005518)&~0x4));
+
+	Group_17_Item_5_Name = GPIO_PORTB_SLR[3]
+	Group_17_Item_5_Comment = "Bit 3 "
+	Group_17_Item_5_Type = 1, Disabled, Enabled
+	Group_17_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x8)>>3);
+	Group_17_Item_5_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<3)|(GetDWordValue(0,0x40005518)&~0x8));
+
+	Group_17_Item_6_Name = GPIO_PORTB_SLR[4]
+	Group_17_Item_6_Comment = "Bit 4 "
+	Group_17_Item_6_Type = 1, Disabled, Enabled
+	Group_17_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x10)>>4);
+	Group_17_Item_6_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<4)|(GetDWordValue(0,0x40005518)&~0x10));
+
+	Group_17_Item_7_Name = GPIO_PORTB_SLR[5]
+	Group_17_Item_7_Comment = "Bit 5 "
+	Group_17_Item_7_Type = 1, Disabled, Enabled
+	Group_17_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x20)>>5);
+	Group_17_Item_7_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<5)|(GetDWordValue(0,0x40005518)&~0x20));
+
+	Group_17_Item_8_Name = GPIO_PORTB_SLR[6]
+	Group_17_Item_8_Comment = "Bit 6 "
+	Group_17_Item_8_Type = 1, Disabled, Enabled
+	Group_17_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x40)>>6);
+	Group_17_Item_8_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<6)|(GetDWordValue(0,0x40005518)&~0x40));
+	
+	Group_17_Item_9_Name = GPIO_PORTB_SLR[7]
+	Group_17_Item_9_Comment = "Bit 7 "
+	Group_17_Item_9_Type = 1, Disabled, Enabled
+	Group_17_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x40005518)&0x80)>>7);
+	Group_17_Item_9_DecodingProc = SetDWordValue(0, 0x40005518, (GetInt()<<7)|(GetDWordValue(0,0x40005518)&~0x80));
+
+Group_18_Name = PORTB DIGITAL ENABLE REGISTER
+Group_18_Comment = "The GPIODEN register is the digital input enable register. By default, all GPIO signals are configured as digital inputs at reset. If a pin is being used as a GPIO or its Alternate Hardware Function, it should be configured as a digital input. The only time that a pin should not be configured as a digital input is when the GPIO pin is configured to be one of the analog input signals for the analog comparators.\n•Base address: 4000 551Ch.\n•Reset Value: 0000 00FFh."
+Group_18_CodingProc = SetString("0x"+GetDWordValue(0,0x4000551C).toString(16));
+
+Group_18_ItemsNumber = 9
+	Group_18_Item_1_Name = GPIO_PORTB_DEN
+	Group_18_Item_1_Comment = "The DEN values are defined as follows:\n•0 : Digital functions disabled\n•1 : Digital functions enabled.\nThe bits [31:8] are reserved."
+	Group_18_Item_1_Type = 0
+	Group_18_Item_1_CodingProc = SetString("0x"+(GetDWordValue(0,0x4000551C)&0xFF).toString(16));
+	Group_18_Item_1_DecodingProc = SetWordValue(0,0x4000551C,(parseInt(GetString())&0xFF));
+
+	Group_18_Item_2_Name = GPIO_PORTB_DEN[0]
+	Group_18_Item_2_Comment = "Bit 0 "
+	Group_18_Item_2_Type = 1, Disabled, Enabled
+	Group_18_Item_2_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x1)>>0);
+	Group_18_Item_2_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<0)|(GetDWordValue(0,0x4000551C)&~0x1));
+
+	Group_18_Item_3_Name = GPIO_PORTB_DEN[1]
+	Group_18_Item_3_Comment = "Bit 1 "
+	Group_18_Item_3_Type = 1, Disabled, Enabled
+	Group_18_Item_3_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x2)>>1);
+	Group_18_Item_3_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<1)|(GetDWordValue(0,0x4000551C)&~0x2));
+
+	Group_18_Item_4_Name = GPIO_PORTB_DEN[2]
+	Group_18_Item_4_Comment = "Bit 2 "
+	Group_18_Item_4_Type = 1, Disabled, Enabled
+	Group_18_Item_4_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x4)>>2);
+	Group_18_Item_4_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<2)|(GetDWordValue(0,0x4000551C)&~0x4));
+
+	Group_18_Item_5_Name = GPIO_PORTB_DEN[3]
+	Group_18_Item_5_Comment = "Bit 3 "
+	Group_18_Item_5_Type = 1, Disabled, Enabled
+	Group_18_Item_5_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x8)>>3);
+	Group_18_Item_5_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<3)|(GetDWordValue(0,0x4000551C)&~0x8));
+
+	Group_18_Item_6_Name = GPIO_PORTB_DEN[4]
+	Group_18_Item_6_Comment = "Bit 4 "
+	Group_18_Item_6_Type = 1, Disabled, Enabled
+	Group_18_Item_6_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x10)>>4);
+	Group_18_Item_6_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<4)|(GetDWordValue(0,0x4000551C)&~0x10));
+
+	Group_18_Item_7_Name = GPIO_PORTB_DEN[5]
+	Group_18_Item_7_Comment = "Bit 5 "
+	Group_18_Item_7_Type = 1, Disabled, Enabled
+	Group_18_Item_7_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x20)>>5);
+	Group_18_Item_7_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<5)|(GetDWordValue(0,0x4000551C)&~0x20));
+
+	Group_18_Item_8_Name = GPIO_PORTB_DEN[6]
+	Group_18_Item_8_Comment = "Bit 6 "
+	Group_18_Item_8_Type = 1, Disabled, Enabled
+	Group_18_Item_8_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x40)>>6);
+	Group_18_Item_8_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<6)|(GetDWordValue(0,0x4000551C)&~0x40));
+	
+	Group_18_Item_9_Name = GPIO_PORTB_DEN[7]
+	Group_18_Item_9_Comment = "Bit 7 "
+	Group_18_Item_9_Type = 1, Disabled, Enabled
+	Group_18_Item_9_CodingProc = SetInt((GetDWordValue(0, 0x4000551C)&0x80)>>7);
+	Group_18_Item_9_DecodingProc = SetDWordValue(0, 0x4000551C, (GetInt()<<7)|(GetDWordValue(0,0x4000551C)&~0x80));
+
+
+[GPIOC]
+SegmentsNumber = 1
+Segment_1 = GPIOC_seg1, 32, 0x40006000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[SSI0]
+SegmentsNumber = 1
+Segment_1 = SSI0_seg1, 32, 0x40008000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[UART0]
+SegmentsNumber = 1
+Segment_1 = UART0_seg1, 32, 0x4000C000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[TIMER0]
+SegmentsNumber = 1
+Segment_1 = TIMER0_seg1, 32, 0x40030000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[TIMER1]
+SegmentsNumber = 1
+Segment_1 = TIMER1_seg1, 32, 0x40031000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[COMP]
+SegmentsNumber = 1
+Segment_1 = COMP_seg1, 32, 0x4003C000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[FLASHCONT]
+SegmentsNumber = 1
+Segment_1 = FLASHCONT_seg1, 32, 0x400FD000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[SYSCTL]
+SegmentsNumber = 1
+Segment_1 = SYSCTL_seg1, 32, 0x400FE000, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+
+[NVIC]
+SegmentsNumber = 1
+Segment_1 = NVIC_seg1, 32, 0xE000E004, 0x1000
+
+;
+; todo: add symbols
+;
+
+GroupsNumber = 1
+Group_1_Name = Unimplemented
+Group_1_Comment = "This shortcut window is not implemented for now. You can find the peripheral registers directly in the memory view, at the addresses referenced in the device datasheet."
+Group_1_CodingProc = SetString("See registers values in data view.");
+
+;
+; todo: add groups
+;
+

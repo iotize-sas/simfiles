@@ -1,0 +1,72 @@
+[Description]
+Name = STR912FW34
+[Memory]
+CodeStart =0
+CodeSize =557056
+RAMStart =1342177280
+RAMSize =65536
+[ARMType]
+Manufacturer=ST
+ARMCore=9
+ARMCoreType=1
+CoreName=ARM9
+[map_mem]
+FLASH_BaseAddr=00000000
+FLASH_SIZE=88000
+RAM_BaseAddr=50000000
+RAM_SIZE=10000
+addrSCU_SCR0=5C002034
+SCU_SCR0_0=8
+[power]
+VCCmin=25
+VCCmax=40
+[flash]
+NbBank=2
+IsSectors=0
+Flash_Protected=1
+SIZE_B0=80000
+SIZE_B1=8000
+[JTAG]
+IRLen=4
+IdCode=25966041
+IntIdCodeBefore[1]=1457F041
+IntIdCodeAfter[1]=14570041
+IntNameDeviceBefore[1]=_BS
+IntNameDeviceAfter[1]=_PSD
+MaskID=0FFFFFFF
+fNeedTRSTforReset=1
+IntIRLenBefore[1]=5
+IntDRLenBefore=1
+IntIRLenAfter[1]=8
+IntDRLenAfter=1
+IsDBGRQ=0
+IsSMBM=0
+BusLength=48
+[ThumbMode]
+DELTA=E7F4E7F4
+[initatreset]
+init_number=2
+init_1_address=5C002020
+init_1_value=0
+init_2_address=5C00201C
+init_2_value=00001053
+[PDKGenPeriph]
+PeriphsNumber = 18
+Periph_1_Name = CP15
+Periph_2_Name = SCU
+Periph_3_Name = USB
+Periph_4_Name = CAN
+Periph_5_Name = I2C0
+Periph_6_Name = I2C1
+Periph_7_Name = Watchdog
+Periph_8_Name = GPIO0
+Periph_9_Name = GPIO1
+Periph_10_Name = GPIO2
+Periph_11_Name = GPIO3
+Periph_12_Name = GPIO4
+Periph_13_Name = GPIO5
+Periph_14_Name = GPIO6
+Periph_15_Name = GPIO7
+Periph_16_Name = GPIO8
+Periph_17_Name = GPIO9
+PeriphsFile=STR9_Periphs_Desc.perisim

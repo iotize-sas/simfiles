@@ -1,0 +1,114 @@
+[Description]
+Name = EFM32TGxxxF4
+[Memory]
+CodeStart =0x00000000
+CodeSize =0x1000
+FlashSectorSize =0x200
+RAMStart =0x20000000
+RAMSize =0x800
+ConfigStart = 0x0FE04000
+ConfigSize = 0x10
+[ARMType]
+Manufacturer=EnergyMicro
+IsSTM32=0
+ARMCore=M
+CoreName=Cortex-M3
+[Startup]
+DefFile=startup\startup_EFM32TG.o
+[Config]
+Style=Generic
+Def_Vals=FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+[power]
+VCCmin=19
+VCCmax=38
+[SWD]
+IdCode=0x2BA01477
+MaskID=0xFFFFFFFF
+SpecialSWDEntrySequence=1
+SpecialSWDEntrySequence_len=11
+SpecialSWDEntrySequence_data=79E7FFFFFFFFFFFFFF6DB7
+[JTAG]
+IdCode=0x2BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=5
+IntDRLenBefore=1
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]
+UseRPP = 2
+PluginHexFileName = EFM32GG_RPP_plugin.hex
+PluginHexFileOffset = 0x20000000
+PluginLoadAddr = 0x20000000
+PluginStackAddrAddr = 0x20000000
+PluginResetAddrAddr = 0x20000004
+PluginComStatAddr = 0x200006C0
+PluginBufSize = 0x80
+PluginBuf0Addr = 0x20000700
+PluginBuf1Addr = 0x20000780
+PluginEraseTimeout = 10
+PluginEraseAlign = 0x04
+PluginProgramTimeout = 5
+PluginProgramAlign = 0x04
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+PluginCustomError85 = Erasing of Lock Bits not implemented yet
+PluginCustomError86 = Cannot Program Flash because Lock Bits are active
+PluginCustomError87 = Cannot Program Flash because Lock Page bits are active
+_DirectErase=1
+DirectCheckReadProtect=1
+[__DIRECT_ERASE]
+_Erase_NbItems=0
+[DIRECT_CHECKREADPROTECTION]
+CheckROP_NbItems=8
+CheckROP0=CHECK,0x0FE04000,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP1=CHECK,0x0FE04004,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP2=CHECK,0x0FE04008,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP3=CHECK,0x0FE0400C,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP4=CHECK,0x0FE04010,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP5=CHECK,0x0FE04014,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP6=CHECK,0x0FE04018,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+CheckROP7=CHECK,0x0FE0401C,0xFFFFFFFF,0x00000000,0xFFFFFFFF
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Reset_Breaks_Debug=1
+[SPEC_POSTRESET]
+Init_NbItems=1
+Init0= CHECKID,0x0FE081FC,0x00FF0000,0x00000000,0x00490000,Wrong MCU DEVICE ID
+[DEBUG_REGISTERS]
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+[PDKGenPeriph]
+PeriphsFile=EFM32TG_PERIPHS_DESC.perisim
+PeriphsNumber = 35
+Periph_1_Name = SystemControlBlock
+Periph_2_Name = FaultReporting
+Periph_3_Name = SysTick
+Periph_4_Name = NVIC
+Periph_5_Name = MPU
+Periph_10_Name = ACMP0
+Periph_11_Name = ACMP1
+Periph_12_Name = ADC0
+Periph_13_Name = AES
+Periph_14_Name = CMU
+Periph_15_Name = DAC0
+Periph_16_Name = DMA
+Periph_17_Name = EMU
+Periph_18_Name = GPIO
+Periph_19_Name = I2C0
+Periph_20_Name = LCD
+Periph_22_Name = LESENSE
+Periph_23_Name = LETIMER0
+Periph_24_Name = LEUART0
+Periph_25_Name = MSC
+Periph_26_Name = PCNT0
+Periph_27_Name = PRS
+Periph_28_Name = RMU
+Periph_29_Name = RTC
+Periph_30_Name = TIMER0
+Periph_31_Name = TIMER1
+Periph_32_Name = USART0
+Periph_33_Name = USART1
+Periph_34_Name = VCMP
+Periph_35_Name = WDOG

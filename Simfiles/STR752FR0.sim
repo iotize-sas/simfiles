@@ -1,0 +1,94 @@
+[Description]
+Name = STR752FR0
+[Memory]
+CodeStart = 536870912
+CodeSize = 81920
+RAMStart = 1073741824
+RAMSize = 16384
+[ARMType]
+Manufacturer=ST
+ARMCore=7
+ARMCoreType=5
+CoreName=ARM7
+CKSpeedmax=400
+[Plugin]
+pgmpluginhexfilename=plugin_STR7_pgm.hex
+FixedPluginAddressesOffset=00
+[map_mem]
+FLASH_BaseAddr=20000000
+FLASH_SIZE=C4000
+RAM_BaseAddr=40000000
+RAM_SIZE=4000
+OffsetBank1=C0000
+[power]
+VCCmin=25
+VCCmax=59
+[flash]
+NbBank=2
+IsSectors=1
+Flash_Protected=0
+Flash_Protection_Registers=10DFB0
+IsFlashCheckSum=0
+ADDR_B0F0=00000
+ADDR_B0F1=02000
+ADDR_B0F2=04000
+ADDR_B0F3=06000
+ADDR_B0F4=08000
+ADDR_B0F5=10000
+ADDR_B0F6=20000
+ADDR_B0F7=30000
+SIZE_B0F0=02000
+SIZE_B0F1=02000
+SIZE_B0F2=02000
+SIZE_B0F3=02000
+SIZE_B0F4=08000
+SIZE_B0F5=10000
+SIZE_B0F6=10000
+SIZE_B0F7=10000
+ADDR_B1F0=C0000
+ADDR_B1F1=C2000
+SIZE_B1F0=02000
+SIZE_B1F1=02000
+[JTAG]
+IRLen=4
+IdCode=4F1F0041
+MaskID=0FFFFFFF
+fNeedTRSTforReset=1
+IntIRLenBefore[1]=0
+IntDRLenBefore=0
+IntIRLenAfter[1]=0
+IntDRLenAfter=0
+IsDBGRQ=0
+IsSMBM=0
+BusLength=28
+[ThumbMode]
+DELTA=E7FAE7FA
+[BOOT_MODE]
+BootModeReg=60000010
+NbUserMode=2
+[initatreset]
+init_number=1
+init_1_address=FFFFF800
+init_1_value=0
+[PDKGenPeriph]
+PeriphsNumber = 19
+Periph_1_Name = FLASH_CTRL
+Periph_2_Name = ADC
+Periph_3_Name = TB
+Periph_4_Name = Timer0
+Periph_5_Name = Timer1
+Periph_6_Name = Timer2
+Periph_7_Name = PWM
+Periph_8_Name = WDG
+Periph_9_Name = CAN
+Periph_10_Name = I2C
+Periph_11_Name = UART0
+Periph_12_Name = UART1
+Periph_13_Name = UART2
+Periph_14_Name = GPIO0
+Periph_15_Name = GPIO1
+Periph_16_Name = GPIO2
+Periph_17_Name = DMA
+Periph_18_Name = RTC
+Periph_19_Name = EIC
+PeriphsFile=STR750_Periphs_Desc.perisim
