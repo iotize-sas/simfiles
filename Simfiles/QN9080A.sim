@@ -1,0 +1,145 @@
+[Description]
+Name = QN9080A
+[Startup]
+DefFile=startup\startup_QN908X.o
+[Memory]
+CodeStart =0x00000000
+CodeSize =0x80000
+FlashSectorSize = 2048
+RAMStart =0x04000000
+RAMSize =0x20000
+ConfigStart =0x03000000
+ConfigSize =0x40000
+Config2Start = 0x0007E800
+Config2Size = 0x1000
+[ARMType]
+Manufacturer=NXP
+IsSTM32=0
+ARMCore=M
+CoreName=Cortex-M4+FPU
+IsNXP=1
+[power]
+VCCmin=16
+VCCmax=36
+[SWD]
+IdCode=0x1BA01477
+MaskID=0x0FFFEFFF
+[JTAG]
+IdCode=0x2BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=5
+IntDRLenBefore=1
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]
+Vector_CheckSum=0x1C
+Last_Vector=0x1C
+IsFlashCheckSum=1
+UseRPP = 2
+ErasedBitValue=1
+PluginHexFileName = QN9080_plugin.hex
+PluginHexFileOffset = 0x20000000
+PluginLoadAddr = 0x20000000
+PluginStackAddr = @0x20000000
+PluginResetAddr = @0x20000004
+PluginComStatAddr = 0x20000DC0
+PluginBufSize = 0x1000
+PluginBuf0Addr = 0x20001000
+PluginBuf1Addr = 0x20002000
+PluginEraseTimeout = 60
+PluginEraseAlign = 0x04
+PluginProgramTimeout = 5
+PluginProgramAlign = 0x04
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+fHasVerify = 1
+DirectErase=0
+DirectEraseNo16=0
+RPPErase=1
+DirectCheckReadProtect
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Reset_Breaks_Debug=1
+ReconnectAfterErase=1
+Nb_Breaks=8
+Init_NbItems=0
+[SPEC_POSTRESET]
+Init_NbItems=3
+;remap flash at zero instead of boot rom
+Init0= WRITE,0x40000014,0x00000000,0x00000001
+;read value of PC at address 4
+Init1=READPC,0x00000004
+;read value of SP at address 0
+Init2=READSP,0x00000000
+[DEBUG_REGISTERS]
+DBGMCU_CR_Addr = 0xE0042004
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+[SWV]
+UseSWV = 1
+TPIU_Current_port_size_Addr = 0xE0040004
+TPIU_Formatter_flush_ctrl_Addr = 0xE0040304
+TPIU_Sel_pin_protocol_Addr = 0xE00400F0
+TPIU_Prescaler_Addr = 0xE0040010
+ITM_Lock_Access_Addr = 0xE0000FB0
+ITM_Trace_Control_Addr = 0xE0000E80
+ITM_Trace_Enable_Addr = 0xE0000E00
+ITM_Trace_Privilege_Addr = 0xE0000E40
+DWT_ControlRegister_Addr = 0xE0001000
+DWT_CYCCNT_Addr = 0xE0001004
+DWT_CPICNT_Addr = 0xE0001008
+DWT_EXCCNT_Addr = 0xE000100C
+DWT_SLEEPCNT_Addr = 0xE0001010
+DWT_LSUCNT_Addr = 0xE0001014
+DWT_FOLDCNT_Addr = 0xE0001018
+DWT_PCSR_Addr = 0xE000101C
+DWT_COMPx_Addr = 0xE0001020
+DWT_MASKx_Addr = 0xE0001024
+DWT_FUNCTIONx_Addr = 0xE0001028
+[PDKGenPeriph]
+PeriphsFile=QN9080_Periphs_Desc.perisim
+PeriphsNumber = 100
+Periph_1_Name = SystemControlBlock
+Periph_2_Name = FaultReporting
+Periph_3_Name = SysTick
+Periph_4_Name = MPU
+Periph_10_Name = ADC
+Periph_11_Name = AGC
+Periph_12_Name = BLEDP
+Periph_13_Name = CALIB
+Periph_14_Name = CRC_ENGINE
+Periph_15_Name = CS
+Periph_16_Name = CTIMER0
+Periph_17_Name = CTIMER1
+Periph_18_Name = CTIMER2
+Periph_19_Name = CTIMER3
+Periph_20_Name = DAC
+Periph_21_Name = DMA0
+Periph_22_Name = FLASH
+Periph_23_Name = FLEXCOMM0
+Periph_24_Name = FLEXCOMM1
+Periph_25_Name = FLEXCOMM2
+Periph_26_Name = FLEXCOMM3
+Periph_27_Name = FSP
+Periph_28_Name = GPIOA
+Periph_29_Name = GPIOB
+Periph_30_Name = I2C0
+Periph_31_Name = I2C1
+Periph_32_Name = INPUTMUX
+Periph_33_Name = PINT
+Periph_34_Name = PROP
+Periph_35_Name = QDEC0
+Periph_36_Name = QDEC1
+Periph_37_Name = RNG
+Periph_38_Name = RTC
+Periph_39_Name = SCT0
+Periph_40_Name = SPI0
+Periph_41_Name = SPI1
+Periph_42_Name = SPIFI0
+Periph_43_Name = SYSCON
+Periph_44_Name = USART0
+Periph_45_Name = USART1
+Periph_46_Name = USB0
+Periph_47_Name = WDT

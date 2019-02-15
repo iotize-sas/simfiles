@@ -1,0 +1,117 @@
+[Description]
+Name = LPC824x2
+[Memory]
+CodeStart =0
+FlashSectorSize =0x400
+CodeSize =0x8000
+RAMStart =0x10000000
+RAMSize =0x2000
+[ARMType]
+Manufacturer=NXP
+IsSTM32=0
+IsCortexM0=1
+ARMCore=K
+CoreName=Cortex-M0
+[power]
+VCCmin=21
+VCCmax=51
+[ToolsVersions]
+MinOP4Ver=1.0.7
+[SWD]
+IdCode=0x0BC11477
+MaskID=0x0FFFEFFF
+[JTAG]
+IdCode=0x2BA00477
+MaskID=0x0FFFFFFF
+IntIRLenBefore=0
+IntDRLenBefore=0
+IntIRLenAfter=0
+IntDRLenAfter=0
+[FLASH]
+Vector_CheckSum=0x1C
+Last_Vector=0x1C
+IsFlashCheckSum=1
+UseRPP = 2
+ErasedBitValue=1
+PluginHexFileName = LPC82xx_plugin.hex
+PluginHexFileOffset = 0x10000000
+PluginLoadAddr = 0x10000000
+PluginStackAddr = @0x10000000
+PluginResetAddr = @0x10000004
+PluginComStatAddr = 0x10001BC0
+PluginBufSize = 0x200
+PluginBuf0Addr = 0x10001C00
+PluginBuf1Addr = 0x10001E00
+PluginEraseTimeout = 10
+PluginEraseAlign = 0x04
+PluginProgramTimeout = 5
+PluginProgramAlign = 0x04
+PluginBlankCheckTimeout = 4
+PluginBlankCheckAlign = 0x04
+DirectErase=0
+DirectEraseNo16=0
+RPPErase=1
+DirectCheckReadProtect=1
+[SPEC_DEBUG]
+Connect_Under_Reset=0
+Nb_Breaks=8
+Init_NbItems=0
+[SPEC_POSTRESET]
+Init_NbItems=3
+;remap flash at zero instead of boot rom
+;see spec of MEMMAP register in LPC1768 reference manual
+Init0= WRITE,0x40048000,0x00000002,0x00000002
+;read value of PC at address 4
+Init1=READPC,0x00000004
+;read value of SP at address 0
+Init2=READSP,0x00000000
+[DEBUG_REGISTERS]
+DBGMCU_CR_Addr = 0xE0042004
+DHCSR_Addr = 0xE000EDF0
+DCRSR_Addr = 0xE000EDF4
+DCRDR_Addr = 0xE000EDF8
+DEMCR_Addr = 0xE000EDFC
+[SWV]
+UseSWV = 1
+TPIU_Current_port_size_Addr = 0xE0040004
+TPIU_Formatter_flush_ctrl_Addr = 0xE0040304
+TPIU_Sel_pin_protocol_Addr = 0xE00400F0
+TPIU_Prescaler_Addr = 0xE0040010
+ITM_Lock_Access_Addr = 0xE0000FB0
+ITM_Trace_Control_Addr = 0xE0000E80
+ITM_Trace_Enable_Addr = 0xE0000E00
+ITM_Trace_Privilege_Addr = 0xE0000E40
+DWT_ControlRegister_Addr = 0xE0001000
+DWT_CYCCNT_Addr = 0xE0001004
+DWT_CPICNT_Addr = 0xE0001008
+DWT_EXCCNT_Addr = 0xE000100C
+DWT_SLEEPCNT_Addr = 0xE0001010
+DWT_LSUCNT_Addr = 0xE0001014
+DWT_FOLDCNT_Addr = 0xE0001018
+DWT_PCSR_Addr = 0xE000101C
+DWT_COMPx_Addr = 0xE0001020
+DWT_MASKx_Addr = 0xE0001024
+DWT_FUNCTIONx_Addr = 0xE0001028
+[PDKGenPeriph]
+PeriphsFile=LPC82x.perisim
+PeriphsNumber = 21
+Periph_1_Name = SystemConfiguration
+Periph_2_Name = PMU
+Periph_3_Name = InterruptController
+Periph_4_Name = IOConfiguration
+Periph_5_Name = ADC
+Periph_6_Name = CT16B0
+Periph_7_Name = CT16B1
+Periph_8_Name = CT32B0
+Periph_10_Name = CT32B1
+Periph_11_Name = GPIO0
+Periph_12_Name = GPIO1
+Periph_13_Name = GPIO2
+Periph_14_Name = GPIO3
+Periph_15_Name = I2C_busController
+Periph_16_Name = SPI0
+Periph_17_Name = SPI1
+Periph_18_Name = SSP
+Periph_19_Name = SystemTickTimer
+Periph_20_Name = UART
+Periph_21_Name = WDT
