@@ -28,10 +28,9 @@ IntDRLenBefore=0
 IntIRLenAfter=0
 IntDRLenAfter=0
 [FLASH]
-Vector_CheckSum=0x1C
-Last_Vector=0x1C
-IsFlashCheckSum=1
 UseRPP = 2
+Has_Flash_CheckSum=1
+Vector_CheckSum=0x1C
 ErasedBitValue=1
 PluginHexFileName = LPC82xx_plugin.hex
 PluginHexFileOffset = 0x10000000
@@ -48,14 +47,16 @@ PluginProgramTimeout = 5
 PluginProgramAlign = 0x04
 PluginBlankCheckTimeout = 4
 PluginBlankCheckAlign = 0x04
+fHasVerify = 0
 DirectErase=0
 DirectEraseNo16=0
 RPPErase=1
 DirectCheckReadProtect=1
 [SPEC_DEBUG]
 Connect_Under_Reset=0
-Nb_Breaks=8
+Nb_Breaks=4
 Init_NbItems=0
+TAR_AutoInc_Nb_Bits=10
 [SPEC_POSTRESET]
 Init_NbItems=3
 ;remap flash at zero instead of boot rom
